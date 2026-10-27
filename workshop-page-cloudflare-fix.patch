@@ -1,0 +1,53 @@
+diff --git a/netlify.toml b/netlify.toml
+index 36c768d..f890ba0 100644
+--- a/netlify.toml
++++ b/netlify.toml
+@@ -1,5 +1,5 @@
+ [build]
+-  publish = "."
++  publish = "public"
+   functions = "netlify/functions"
+ 
+ [functions]
+diff --git a/daycon-do-thai.html b/public/daycon-do-thai.html
+similarity index 100%
+rename from daycon-do-thai.html
+rename to public/daycon-do-thai.html
+diff --git a/index.html b/public/index.html
+similarity index 100%
+rename from index.html
+rename to public/index.html
+diff --git a/khaosatchualanh.html b/public/khaosatchualanh.html
+similarity index 100%
+rename from khaosatchualanh.html
+rename to public/khaosatchualanh.html
+diff --git a/khaosatdocsach.html b/public/khaosatdocsach.html
+similarity index 100%
+rename from khaosatdocsach.html
+rename to public/khaosatdocsach.html
+diff --git a/lehoivanhoa.html b/public/lehoivanhoa.html
+similarity index 100%
+rename from lehoivanhoa.html
+rename to public/lehoivanhoa.html
+diff --git a/lua-chon-dung.html b/public/lua-chon-dung.html
+similarity index 100%
+rename from lua-chon-dung.html
+rename to public/lua-chon-dung.html
+diff --git a/noi-so-tuong-lai.html b/public/noi-so-tuong-lai.html
+similarity index 100%
+rename from noi-so-tuong-lai.html
+rename to public/noi-so-tuong-lai.html
+diff --git a/wrangler.jsonc b/wrangler.jsonc
+new file mode 100644
+index 0000000..d31ed2c
+--- /dev/null
++++ b/wrangler.jsonc
+@@ -0,0 +1,8 @@
++{
++  "$schema": "node_modules/wrangler/config-schema.json",
++  "name": "workshop-page",
++  "compatibility_date": "2026-10-23",
++  "assets": {
++    "directory": "./public"
++  }
++}
