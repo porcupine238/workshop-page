@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Khảo sát: Dạy con theo phương pháp của người Do Thái</title>
+<meta name="description" content="Khảo sát ngắn về mong muốn, thói quen và mối quan tâm của phụ huynh khi dạy con theo tinh thần tự lập, ham học hỏi và biết đặt câu hỏi." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          display: ['"Cormorant Garamond"', 'serif'],
+          serif: ['"EB Garamond"', 'serif'],
+          sans: ['Inter', 'system-ui', 'sans-serif'],
+        },
+        colors: {
+          parchment: '#F7F0E3',
+          paper: '#FFF9EE',
+          ink: '#241E18',
+          'ink-soft': '#55483C',
+          cedar: '#6E4A2E',
+          'cedar-deep': '#3C2A1D',
+          olive: '#6E7655',
+          honey: '#C7933E',
+          clay: '#B8704D',
+        }
+      }
+    }
+  }
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body {
+    background:
+      linear-gradient(180deg, rgba(255,249,238,.92), rgba(247,240,227,.96)),
+      url('https://images.pexels.com/photos/3730979/pexels-photo-3730979.jpeg?auto=compress&cs=tinysrgb&w=2200') center/cover fixed;
+    color: #241E18;
+    font-family: Inter, system-ui, sans-serif;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: .25;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='2' seed='9'/><feColorMatrix values='0 0 0 0 0.29 0 0 0 0 0.22 0 0 0 0 0.13 0 0 0 .08 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    z-index: 0;
+  }
+  .glass {
+    background: rgba(255, 249, 238, .78);
+    border: 1px solid rgba(110, 74, 46, .18);
+    box-shadow: 0 22px 70px rgba(60, 42, 29, .12);
+    backdrop-filter: blur(18px);
+  }
+  .hero-photo {
+    background:
+      linear-gradient(180deg, rgba(36,30,24,.08), rgba(36,30,24,.58)),
+      url('https://www.shutterstock.com/shutterstock/photos/2735215927/display_1500/stock-photo-picture-of-an-ultra-orthodox-jewish-father-with-a-small-close-fitting-beard-studying-torah-from-a-reading-book-with-his-son.jpg') center/cover;
+  }
+  .choice {
+    min-height: 52px;
+    transition: transform .22s ease, border-color .22s ease, background-color .22s ease, box-shadow .22s ease;
+  }
+  .choice:hover { transform: translateY(-2px); }
+  .choice:has(input:checked) {
+    background: rgba(199, 147, 62, .16);
+    border-color: rgba(110, 74, 46, .62);
+    box-shadow: 0 12px 26px rgba(110, 74, 46, .12), inset 0 0 0 1px rgba(199, 147, 62, .18);
+  }
+  .choice input {
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    flex: 0 0 auto;
+    border: 2px solid rgba(110, 74, 46, .4);
+    background: #FFF9EE;
+    position: relative;
+  }
+  .choice input[type="radio"] { border-radius: 999px; }
+  .choice input[type="checkbox"] { border-radius: 6px; }
+  .choice input:checked { border-color: #6E4A2E; background: #6E4A2E; }
+  .choice input[type="radio"]:checked::after {
+    content: '';
+    position: absolute;
+    inset: 5px;
+    border-radius: 999px;
+    background: #FFF9EE;
+  }
+  .choice input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    width: 7px;
+    height: 12px;
+    border: solid #FFF9EE;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  .field {
+    width: 100%;
+    border-radius: 18px;
+    border: 1px solid rgba(110, 74, 46, .22);
+    background: rgba(255, 249, 238, .82);
+    padding: 15px 16px;
+    min-height: 52px;
+    color: #241E18;
+    outline: none;
+    transition: border-color .2s ease, box-shadow .2s ease, background-color .2s ease;
+  }
+  .field:focus {
+    border-color: rgba(110, 74, 46, .74);
+    box-shadow: 0 0 0 4px rgba(199, 147, 62, .18);
+    background: #FFF9EE;
+  }
+  .progress-bar { width: var(--progress, 0%); }
+  .fade-in { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
+    .fade-in { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+<header class="fixed top-0 inset-x-0 z-50 px-4 md:px-8 py-4">
+  <div class="max-w-6xl mx-auto glass rounded-full px-4 md:px-6 py-3 flex items-center justify-between gap-4">
+    <a href="index.html" class="text-[11px] md:text-xs tracking-[0.18em] uppercase font-semibold text-cedar-deep hover:text-cedar focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-honey">Wonder of World</a>
+    <div class="flex-1 max-w-sm h-2 bg-cedar/10 rounded-full overflow-hidden" aria-hidden="true">
+      <div id="progressBar" class="progress-bar h-full bg-gradient-to-r from-olive to-honey rounded-full transition-all duration-300"></div>
+    </div>
+    <span id="progressText" class="text-[11px] md:text-xs tracking-[0.14em] uppercase text-ink-soft whitespace-nowrap">01 / 11</span>
+  </div>
+</header>
+
+<main class="relative z-10">
+  <section id="heroSection" class="min-h-dvh px-5 md:px-8 pt-28 pb-14 flex items-center">
+    <div class="max-w-6xl mx-auto grid lg:grid-cols-[1.05fr_.95fr] gap-8 lg:gap-12 items-center">
+      <div class="fade-in">
+        <div class="inline-flex items-center gap-3 text-xs tracking-[0.24em] uppercase text-cedar font-semibold mb-7">
+          <span class="w-10 h-px bg-honey"></span>
+          Khảo sát phụ huynh
+        </div>
+        <h1 class="font-display text-5xl md:text-7xl lg:text-8xl leading-[.98] text-ink mb-7">
+          Dạy con theo phương pháp của <em class="italic text-cedar">người Do Thái</em>
+        </h1>
+        <p class="font-serif text-xl md:text-2xl leading-relaxed text-ink-soft max-w-2xl italic mb-9">
+          Một khảo sát ngắn để hiểu cách bạn đang đồng hành cùng con: khơi gợi câu hỏi, rèn tự lập, nuôi dưỡng trách nhiệm và tình yêu học hỏi.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-3">
+          <a href="#survey" class="inline-flex items-center justify-center min-h-[52px] px-7 rounded-full bg-cedar text-paper font-semibold tracking-wide hover:bg-cedar-deep focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-honey transition-colors">Bắt đầu khảo sát</a>
+          <a href="#intro" class="inline-flex items-center justify-center min-h-[52px] px-7 rounded-full border border-cedar/25 text-cedar-deep font-semibold hover:bg-paper/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-honey transition-colors">Xem nội dung</a>
+        </div>
+      </div>
+      <div class="hero-photo min-h-[420px] lg:min-h-[620px] rounded-[28px] overflow-hidden shadow-[0_28px_80px_rgba(60,42,29,.22)] flex items-end p-7 md:p-9 fade-in">
+        <div class="text-paper">
+          <p class="text-xs tracking-[0.22em] uppercase mb-3 opacity-85">10 câu hỏi · 4 phút</p>
+          <p class="font-display text-3xl md:text-4xl leading-tight max-w-md">Không có đáp án đúng sai. Chỉ có cách gia đình bạn đang muốn lớn lên cùng con.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="intro" class="px-5 md:px-8 py-14 md:py-20">
+    <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-5">
+      <article class="glass rounded-2xl p-6 md:p-7 fade-in">
+        <div class="text-honey font-display text-4xl mb-4">01</div>
+        <h2 class="font-display text-3xl text-ink mb-3">Tự lập</h2>
+        <p class="text-ink-soft leading-relaxed">Trẻ được giao việc vừa sức, được thử, được sai và được tự chịu trách nhiệm trong phạm vi an toàn.</p>
+      </article>
+      <article class="glass rounded-2xl p-6 md:p-7 fade-in">
+        <div class="text-honey font-display text-4xl mb-4">02</div>
+        <h2 class="font-display text-3xl text-ink mb-3">Đặt câu hỏi</h2>
+        <p class="text-ink-soft leading-relaxed">Cha mẹ khơi gợi suy nghĩ bằng đối thoại thay vì chỉ đưa mệnh lệnh, để trẻ học cách phân tích vấn đề.</p>
+      </article>
+      <article class="glass rounded-2xl p-6 md:p-7 fade-in">
+        <div class="text-honey font-display text-4xl mb-4">03</div>
+        <h2 class="font-display text-3xl text-ink mb-3">Ham học hỏi</h2>
+        <p class="text-ink-soft leading-relaxed">Gia đình biến việc học thành thói quen sống: đọc, quan sát, tranh luận và liên hệ với đời sống hằng ngày.</p>
+      </article>
+    </div>
+  </section>
+
+  <form id="survey" class="px-5 md:px-8 py-14 md:py-20">
+    <div class="max-w-4xl mx-auto space-y-7">
+      <div class="text-center mb-10 fade-in">
+        <p class="text-xs tracking-[0.24em] uppercase text-cedar font-semibold mb-4">Bắt đầu từ gia đình bạn</p>
+        <h2 class="font-display text-4xl md:text-6xl text-ink leading-tight">Những câu hỏi khảo sát</h2>
+      </div>
+
+      <section class="question glass rounded-[24px] p-6 md:p-8 fade-in" data-question>
+        <p class="text-sm font-semibold text-honey mb-2">Câu 1</p>
+        <h3 class="font-display text-3xl md:text-4xl mb-5">Bạn đang quan tâm nhất đến điều gì khi dạy con?</h3>
+        <div class="grid gap-3" data-name="q1" data-type="radio">
+          <label class="choice cursor-pointer rounded-2xl border border-cedar/15 p-4 flex gap-3 items-start"><input type="radio" name="q1" value="tu_lap"><span>Giúp con tự lập và chủ động hơn</span></label>
+          <label class="choice cursor-pointer rounded-2xl border border-cedar/15 p-4 flex gap-3 items-start"><input type="radio" name="q1" value="hoc_tap"><span>Giúp con yêu thích học tập, đọc sách</span></label>
+          <label class="choice cursor-pointer rounded-2xl border border-cedar/15 p-4 flex gap-3 items-start"><input type="radio" name="q1" value="ky_luat"><span>Rèn kỷ luật nhưng không làm con sợ hãi</span></label>
+          <label class="choice cursor-pointer rounded-2xl border border-cedar/15 p-4 flex gap-3 items-start"><input type="radio" name="q1" value="giao_tiep"><span>Giao tiếp với con bớt căng thẳng hơn</span></label>
+        </div>
+      </section>
+
+      <section class="question glass rounded-[24px] p-6 md:p-8 fade-in" data-question>
+        <p class="text-sm font-semibold text-honey mb-2">Câu 2</p>
+        <h3 class="font-display text-3xl md:text-4xl mb-5">Hiện tại bạn thường gặp khó khăn nào? <span class="font-serif text-xl text-ink-soft">(có thể chọn nhiều)</span></h3>
+        <div class="grid gap-3" data-name="q2" data-type="checkbox">
+          <label class="choice cursor-pointer rounded-2xl border border-cedar/15 p-4 flex gap-3 items-start"><input type="checkbox" value="con_thieu_tap_trung"><span>Con khó tập trung hoặc nhanh chán</span></label>
+          <label class="choice cursor-pointer rounded-2xl border border-cedar/15 p-4 flex gap-3 items-start"><input type="checkbox" value="ngai_doc_sach"><span>Con ít đọc sách, ít tò mò học hỏi</span></label>
+          <label class="choice cursor-pointer rounded-2xl border border-cedar/15 p-4 flex gap-3 items-start"><input type="checkbox" value="cha_me_nong_gian"><span>Cha mẹ dễ nóng giận khi con không nghe lời</span></label>
+          <label class="choice cursor-pointer rounded-2xl border border-cedar/15 p-4 flex gap-3 items-start"><input type="checkbox" value="thieu_tu_lap"><span>Con phụ thuộc nhiều vào người lớn</span></label>
+          <label class="choice cursor-pointer rounded-2xl border border-cedar/15 p-4 flex gap-3 items-start"><input type="checkbox" value="man_hinh"><span>Khó cân bằng thời gian màn hình</span></label>
+        </div>
+      </section>
+
+      <section class="question glass rounded-[24px] p-6 md:p-8 fade-in" data-question>
+        <p class="text-sm font-semibold text-honey mb-2">Câu 3</p>
+        <h3 class="font-display text-3xl md:text-4xl mb-5">Khi con hỏi một câu khó, bạn thường phản ứng thế nào?</h3>
+        <div class="grid gap-3" data-name="q3" data-type="radio">
+          <label class="choice cursor-pointer rounded-2xl border border-cedar/15 p-4 flex gap-3 items-start"><input type="radio" name="q3" value="tra_loi_ngay"><span>Trả lời ngay nếu mình biết</span></label>
+          <label class="choice cursor-pointer rounded-2xl border border-cedar/15 p-4 flex gap-3 items-start"><input type="radio" name="q3" value="hoi_nguoc"><span>Hỏi ngược lại để con tự suy nghĩ thêm</span></label>
+          <label class="choice cursor-pointer rounded-2xl border border-cedar/15 p-4 flex gap-3 items-start"><input type="radio" name="q3" value="tim_hieu_cung_con"><span>Cùng con tìm hiểu sau đó</span></label>
+          <label class="choice cursor-pointer rounded-2xl border border-cedar/15 p-4 flex gap-3 items-start"><input type="radio" name="q3" value="doi_chu_de"><span>Đôi khi né tránh vì không biết trả lời</span></label>
+        </div>
+      </section>
+
+      <section class="question glass rounded-[24px] p-6 md:p-8 fade-in" data-question>
+        <label for="q4" class="block">
+          <p class="text-sm font-semibold text-honey mb-2">Câu 4</p>
+          <span class="font-display text-3xl md:text-4xl mb-5 block">Bạn mong con sẽ trở thành người như thế nào trong 5-10 năm tới?</span>
+        </label>
+        <textarea id="q4" class="field min-h-[140px] resize-y" placeholder="Ví dụ: tự tin, biết chịu trách nhiệm, tử tế, ham học hỏi..."></textarea>
+      </section>
+
+      <section class="question glass rounded-[24px] p-6 md:p-8 fade-in" data-question>
+        <p class="text-sm font-semibold text-honey mb-2">Câu 5</p>
+        <h3 class="font-display text-3xl md:text-4xl mb-5">Bạn muốn học thêm chủ đề nào? <span class="font-serif text-xl text-ink-soft">(có thể chọn nhiều)</span></h3>
+        <div class="grid gap-3 md:grid-cols-2" data-name="q5" data-type="checkbox">
+          <label class="choice cursor-pointer rounded-2xl border border-cedar/15 p-4 flex gap-3 items-start"><input type="checkbox" value="dat_cau_hoi"><span>Nghệ thuật đặt câu hỏi với con</span></label>
+          <label class="choice cursor-pointer rounded-2xl border border-cedar/15 p-4 flex gap-3 items-start"><input type="checkbox" value="tai_chinh"><span>Dạy con tư duy tài chính sớm</span></label>
+          <label class="choice cursor-pointer rounded-2xl border border-cedar/15 p-4 flex gap-3 items-start"><input type="checkbox" value="doc_sach"><span>Xây dựng thói quen đọc sách</span></label>
+          <label class="choice cursor-pointer rounded-2xl border border-cedar/15 p-4 flex gap-3 items-start"><input type="checkbox" value="ky_luat_tich_cuc"><span>Kỷ luật tích cực trong gia đình</span></label>
+          <label class="choice cursor-pointer rounded-2xl border border-cedar/15 p-4 flex gap-3 items-start"><input type="checkbox" value="tu_lap"><span>Giao việc và rèn tự lập theo độ tuổi</span></label>
+          <label class="choice cursor-pointer rounded-2xl border border-cedar/15 p-4 flex gap-3 items-start"><input type="checkbox" value="giao_tiep"><span>Giao tiếp khi con bướng bỉnh</span></label>
+        </div>
+      </section>
+
+      <section class="question glass rounded-[24px] p-6 md:p-8 fade-in" data-question>
+        <p class="text-sm font-semibold text-honey mb-2">Câu 6</p>
+        <h3 class="font-display text-3xl md:text-4xl mb-5">Trong gia đình, con có được giao việc nhà thường xuyên không?</h3>
+        <div class="grid gap-3" data-name="q6" data-type="radio">
+          <label class="choice cursor-pointer rounded-2xl border border-cedar/15 p-4 flex gap-3 items-start"><input type="radio" name="q6" value="hang_ngay"><span>Có, gần như mỗi ngày</span></label>
+          <label class="choice cursor-pointer rounded-2xl border border-cedar/15 p-4 flex gap-3 items-start"><input type="radio" name="q6" value="thinh_thoang"><span>Có, nhưng chưa đều</span></label>
+          <label class="choice cursor-pointer rounded-2xl border border-cedar/15 p-4 flex gap-3 items-start"><input type="radio" name="q6" value="it"><span>Rất ít, thường người lớn làm thay</span></label>
+          <label class="choice cursor-pointer rounded-2xl border border-cedar/15 p-4 flex gap-3 items-start"><input type="radio" name="q6" value="chua_biet"><span>Chưa biết nên giao việc gì cho phù hợp</span></label>
+        </div>
+      </section>
+
+      <section class="question glass rounded-[24px] p-6 md:p-8 fade-in" data-question>
+        <p class="text-sm font-semibold text-honey mb-2">Câu 7</p>
+        <h3 class="font-display text-3xl md:text-4xl mb-5">Bạn đánh giá mức độ tự lập hiện tại của con như thế nào?</h3>
+        <div class="grid gap-3 md:grid-cols-5" data-name="q7" data-type="radio">
+          <label class="choice cursor-pointer rounded-2xl border border-cedar/15 p-4 flex gap-3 items-center justify-center"><input type="radio" name="q7" value="1"><span>1</span></label>
+          <label class="choice cursor-pointer rounded-2xl border border-cedar/15 p-4 flex gap-3 items-center justify-center"><input type="radio" name="q7" value="2"><span>2</span></label>
+          <label class="choice cursor-pointer rounded-2xl border border-cedar/15 p-4 flex gap-3 items-center justify-center"><input type="radio" name="q7" value="3"><span>3</span></label>
+          <label class="choice cursor-pointer rounded-2xl border border-cedar/15 p-4 flex gap-3 items-center justify-center"><input type="radio" name="q7" value="4"><span>4</span></label>
+          <label class="choice cursor-pointer rounded-2xl border border-cedar/15 p-4 flex gap-3 items-center justify-center"><input type="radio" name="q7" value="5"><span>5</span></label>
+        </div>
+        <p class="mt-3 text-sm text-ink-soft">1 là còn phụ thuộc nhiều, 5 là rất chủ động.</p>
+      </section>
+
+      <section class="question glass rounded-[24px] p-6 md:p-8 fade-in" data-question>
+        <p class="text-sm font-semibold text-honey mb-2">Câu 8</p>
+        <h3 class="font-display text-3xl md:text-4xl mb-5">Nếu có một buổi chia sẻ về phương pháp dạy con của người Do Thái, bạn muốn tham gia không?</h3>
+        <div class="grid gap-3" data-name="interested" data-type="radio">
+          <label class="choice cursor-pointer rounded-2xl border border-cedar/15 p-4 flex gap-3 items-start"><input type="radio" name="interested" value="co"><span>Có, tôi muốn tìm hiểu thêm</span></label>
+          <label class="choice cursor-pointer rounded-2xl border border-cedar/15 p-4 flex gap-3 items-start"><input type="radio" name="interested" value="can_can_nhac"><span>Có thể, tôi cần xem thời gian và nội dung</span></label>
+          <label class="choice cursor-pointer rounded-2xl border border-cedar/15 p-4 flex gap-3 items-start"><input type="radio" name="interested" value="chua"><span>Chưa hứng thú ở thời điểm này</span></label>
+        </div>
+      </section>
+
+      <section class="question glass rounded-[24px] p-6 md:p-8 fade-in" data-question>
+        <p class="text-sm font-semibold text-honey mb-2">Câu 9</p>
+        <h3 class="font-display text-3xl md:text-4xl mb-5">Bạn thích hình thức tham gia nào?</h3>
+        <div class="grid gap-3 md:grid-cols-2" data-name="format" data-type="radio">
+          <label class="choice cursor-pointer rounded-2xl border border-cedar/15 p-4 flex gap-3 items-start"><input type="radio" name="format" value="online"><span>Online, linh hoạt thời gian</span></label>
+          <label class="choice cursor-pointer rounded-2xl border border-cedar/15 p-4 flex gap-3 items-start"><input type="radio" name="format" value="offline"><span>Offline, được gặp gỡ trực tiếp</span></label>
+        </div>
+      </section>
+
+      <section class="question glass rounded-[24px] p-6 md:p-8 fade-in" data-question>
+        <label for="q10" class="block">
+          <p class="text-sm font-semibold text-honey mb-2">Câu 10</p>
+          <span class="font-display text-3xl md:text-4xl mb-5 block">Nếu được hỏi chuyên gia một câu về việc dạy con, bạn muốn hỏi gì?</span>
+        </label>
+        <textarea id="q10" class="field min-h-[130px] resize-y" placeholder="Câu hỏi của bạn..."></textarea>
+      </section>
+
+      <section class="glass rounded-[24px] p-6 md:p-8 fade-in" data-question>
+        <p class="text-sm font-semibold text-honey mb-2">Thông tin liên hệ</p>
+        <h3 class="font-display text-3xl md:text-4xl mb-6">Để chúng tôi gửi thông tin buổi chia sẻ</h3>
+        <div class="grid gap-5">
+          <div>
+            <label for="userName" class="block text-sm font-semibold text-ink-soft mb-2">Bạn tên là</label>
+            <input id="userName" class="field" type="text" autocomplete="name" placeholder="Họ và tên" />
+          </div>
+          <div>
+            <label for="userContact" class="block text-sm font-semibold text-ink-soft mb-2">SĐT / Email</label>
+            <input id="userContact" class="field" type="text" autocomplete="email" placeholder="0xxx... hoặc email@..." />
+          </div>
+          <div>
+            <label for="surveyor" class="block text-sm font-semibold text-ink-soft mb-2">Tên người khảo sát <span class="text-clay">*</span></label>
+            <input id="surveyor" class="field" type="text" placeholder="Người đã giới thiệu khảo sát này" required />
+            <p id="formError" class="hidden mt-2 text-sm font-medium text-clay" role="alert">Vui lòng nhập tên người khảo sát.</p>
+          </div>
+          <button id="submitBtn" type="submit" class="min-h-[56px] rounded-full bg-cedar text-paper font-semibold px-8 hover:bg-cedar-deep disabled:opacity-60 disabled:cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-honey transition-colors">Gửi khảo sát</button>
+        </div>
+      </section>
+    </div>
+  </form>
+
+  <section id="thanksSection" class="hidden min-h-dvh px-5 md:px-8 py-28 items-center justify-center text-center">
+    <div class="max-w-2xl glass rounded-[28px] p-8 md:p-12">
+      <p class="text-sm tracking-[0.24em] uppercase text-honey font-semibold mb-5">Cảm ơn bạn</p>
+      <h2 class="font-display text-4xl md:text-6xl leading-tight mb-6">Chúng tôi đã nhận được câu trả lời của bạn.</h2>
+      <p class="font-serif text-xl text-ink-soft leading-relaxed italic">Hy vọng buổi chia sẻ sắp tới sẽ giúp bạn có thêm vài cách thực tế để đồng hành cùng con bằng sự bình tĩnh, trí tuệ và tình yêu thương.</p>
+    </div>
+  </section>
+</main>
+
+<script>
+  const questions = [...document.querySelectorAll('[data-question]')];
+  const progressBar = document.getElementById('progressBar');
+  const progressText = document.getElementById('progressText');
+  const form = document.getElementById('survey');
+  const submitBtn = document.getElementById('submitBtn');
+  const error = document.getElementById('formError');
+
+  const fadeObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        fadeObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-in').forEach(el => fadeObserver.observe(el));
+
+  function updateProgress() {
+    const midpoint = window.scrollY + window.innerHeight * 0.45;
+    let index = 0;
+    questions.forEach((question, i) => {
+      if (midpoint >= question.offsetTop) index = i;
+    });
+    const total = questions.length;
+    const current = Math.min(index + 1, total);
+    progressBar.style.setProperty('--progress', `${(current / total) * 100}%`);
+    progressText.textContent = `${String(current).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
+  }
+
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        updateProgress();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, { passive: true });
+  window.addEventListener('resize', updateProgress);
+  updateProgress();
+
+  function collectGroup(group) {
+    const name = group.dataset.name;
+    const type = group.dataset.type;
+    if (type === 'radio') {
+      const checked = group.querySelector('input[type="radio"]:checked');
+      return [name, checked ? checked.value : null];
+    }
+    return [name, [...group.querySelectorAll('input[type="checkbox"]:checked')].map(input => input.value)];
+  }
+
+  function collectAnswers() {
+    const answers = {};
+    document.querySelectorAll('[data-name][data-type]').forEach(group => {
+      const [name, value] = collectGroup(group);
+      answers[name] = value;
+    });
+    answers.q4 = document.getElementById('q4').value.trim();
+    answers.q8 = answers.interested;
+    answers.q9 = answers.format;
+    answers.q10 = document.getElementById('q10').value.trim();
+    return answers;
+  }
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const surveyor = document.getElementById('surveyor').value.trim();
+    if (!surveyor) {
+      error.classList.remove('hidden');
+      document.getElementById('surveyor').focus();
+      return;
+    }
+    error.classList.add('hidden');
+
+    const originalLabel = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Đang gửi...';
+
+    const payload = {
+      survey: 'daycon_do_thai',
+      name: document.getElementById('userName').value.trim(),
+      contact: document.getElementById('userContact').value.trim(),
+      surveyor,
+      answers: collectAnswers(),
+    };
+
+    try {
+      const res = await fetch('/api/submit-survey', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+    } catch (err) {
+      console.error('submit error', err);
+      alert('Gửi không thành công. Vui lòng thử lại.');
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalLabel;
+      return;
+    }
+
+    document.getElementById('heroSection').classList.add('hidden');
+    form.classList.add('hidden');
+    document.getElementById('intro').classList.add('hidden');
+    document.getElementById('thanksSection').classList.remove('hidden');
+    document.getElementById('thanksSection').classList.add('flex');
+    progressBar.style.setProperty('--progress', '100%');
+    progressText.textContent = '✓';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+</body>
+</html>

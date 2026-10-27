@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dạo này, lòng bạn có đang ổn không?</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          display: ['"Cormorant Garamond"', 'serif'],
+          serif: ['"EB Garamond"', 'serif'],
+          sans: ['Inter', 'system-ui', 'sans-serif'],
+        },
+        colors: {
+          cream:    '#F5EFE4',
+          'cream-deep': '#EDE3D1',
+          paper:    '#FAF6EC',
+          ink:      '#2B2521',
+          'ink-soft': '#564B42',
+          muted:    '#8A7E70',
+          sage:     '#8FA48C',
+          'sage-deep': '#566B5A',
+          gold:     '#B8924B',
+          'gold-soft': '#D9B978',
+          terra:    '#B5704A',
+          'terra-soft': '#D89A75',
+          forest:   '#3F4E3F',
+          rose:     '#C8856F',
+        }
+      }
+    }
+  }
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body {
+    background:
+      radial-gradient(circle at 15% 10%, rgba(217,185,120,0.06) 0%, transparent 45%),
+      radial-gradient(circle at 85% 90%, rgba(143,164,140,0.06) 0%, transparent 45%),
+      #FBF8F0;
+    color: #2B2521;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 17px;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  /* Subtle paper grain */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='4'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    pointer-events: none;
+    opacity: 0.32;
+    mix-blend-mode: multiply;
+    z-index: 1;
+  }
+  .ornament {
+    display: inline-block;
+    width: 80px; height: 1px;
+    background: currentColor;
+    opacity: 0.4;
+    vertical-align: middle;
+  }
+  .topic-card {
+    position: relative;
+    overflow: hidden;
+    transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 500ms ease;
+    will-change: transform;
+  }
+  .topic-card .cover {
+    position: absolute; inset: 0;
+    background-size: cover;
+    background-position: center;
+    transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1), filter 500ms ease;
+  }
+  .topic-card:hover .cover,
+  .topic-card:focus-visible .cover { transform: scale(1.06); filter: brightness(0.95); }
+  .topic-card:hover { transform: translateY(-6px); }
+  .topic-card .veil {
+    position: absolute; inset: 0;
+    transition: opacity 500ms ease;
+  }
+  .topic-card:hover .veil { opacity: 0.78; }
+
+  .topic-1 .cover { background-image: url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&q=80&w=1600'); }
+  .topic-2 .cover { background-image: url('https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&q=80&w=1600'); }
+  .topic-3 .cover { background-image: url('https://images.unsplash.com/photo-1490730141103-6cac27aaab94?auto=format&fit=crop&q=80&w=1600'); }
+  .topic-4 .cover { background-image: url('https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&q=80&w=1600'); }
+  .topic-5 .cover { background-image: url('https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=1600'); }
+  .topic-6 .cover { background-image: url('https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&q=80&w=1600'); }
+
+  .topic-1 .veil { background: linear-gradient(180deg, rgba(43,37,33,0.35) 0%, rgba(43,37,33,0.92) 100%); }
+  .topic-2 .veil { background: linear-gradient(180deg, rgba(181,112,74,0.30) 0%, rgba(63,41,28,0.93) 100%); }
+  .topic-3 .veil { background: linear-gradient(180deg, rgba(63,78,63,0.32) 0%, rgba(63,78,63,0.93) 100%); }
+  .topic-4 .veil { background: linear-gradient(180deg, rgba(82,64,43,0.30) 0%, rgba(38,30,23,0.94) 100%); }
+  .topic-5 .veil { background: linear-gradient(180deg, rgba(55,62,72,0.30) 0%, rgba(24,28,34,0.94) 100%); }
+  .topic-6 .veil { background: linear-gradient(180deg, rgba(75,96,111,0.28) 0%, rgba(24,37,46,0.94) 100%); }
+
+  .chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 14px;
+    border: 1px solid rgba(255,255,255,0.35);
+    border-radius: 999px;
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(255,255,255,0.85);
+    backdrop-filter: blur(4px);
+  }
+  .arrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    color: rgba(255,255,255,0.92);
+    font-size: 14px; letter-spacing: 0.08em;
+    border-bottom: 1px solid rgba(255,255,255,0.3);
+    padding-bottom: 4px;
+    transition: gap 300ms ease, border-color 300ms ease;
+  }
+  .topic-card:hover .arrow,
+  .topic-card:focus-visible .arrow { gap: 18px; border-color: rgba(255,255,255,0.8); }
+
+  .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 1100ms ease, transform 1100ms cubic-bezier(0.22, 1, 0.36, 1); }
+  .fade-in.is-visible { opacity: 1; transform: translateY(0); }
+
+  /* Focus ring */
+  a:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(184,146,75,0.45); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+    .fade-in { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body class="relative">
+
+<!-- Header -->
+<header class="relative z-20 px-6 md:px-12 pt-8 md:pt-10">
+  <div class="max-w-7xl mx-auto flex items-center justify-between text-ink-soft">
+    <div class="flex items-center gap-3">
+      <span class="w-2 h-2 rounded-full bg-gold"></span>
+      <span class="text-[11px] tracking-[0.28em] uppercase font-medium">Một buổi gặp gỡ · Mùa 2026</span>
+    </div>
+    <a href="#topics" class="text-[11px] tracking-[0.22em] uppercase hidden md:inline-block hover:text-ink transition-colors">Bắt đầu từ đây ↓</a>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="relative z-10 px-6 md:px-12 pt-20 md:pt-28 pb-16 md:pb-24">
+  <div class="max-w-5xl mx-auto text-center fade-in">
+    <div class="text-muted mb-8 text-[12px] tracking-[0.32em] uppercase">
+      <span class="ornament mr-4"></span>
+      Hãy giành ít phút chia sẻ cùng chúng tôi nhé
+      <span class="ornament ml-4"></span>
+    </div>
+    <h1 class="font-display font-light text-5xl md:text-7xl lg:text-8xl leading-[1.05] tracking-tight text-ink mb-8">
+      Hãy lựa chọn <br>
+      một <em class="text-gold italic font-normal">chủ đề</em> mà bạn cảm thấy quan tâm nhất lúc này được không ?
+    </h1>
+    <p class="font-serif text-xl md:text-2xl text-ink-soft max-w-2xl mx-auto leading-relaxed italic">
+      Trước khi bắt đầu buổi gặp hôm nay,
+      bạn hãy giành vài phút lắng nghe chính mình qua một trong sáu chủ đề bên dưới nhé
+    </p>
+
+    <div class="mt-12 text-muted text-base tracking-[0.2em] uppercase">
+      ↓  6 chủ đề dành cho bạn  ↓
+    </div>
+  </div>
+</section>
+
+<!-- Topic cards -->
+<section id="topics" class="relative z-10 px-6 md:px-12 pb-24">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-7">
+
+    <!-- Topic 1 — Đọc sách -->
+    <a href="khaosatdocsach.html"
+       class="topic-card topic-1 fade-in group block rounded-2xl shadow-[0_8px_30px_rgba(43,37,33,0.10)] hover:shadow-[0_24px_60px_rgba(43,37,33,0.22)] focus-visible:shadow-[0_24px_60px_rgba(43,37,33,0.22)] aspect-[3/4] md:aspect-[4/5] no-underline">
+      <div class="cover"></div>
+      <div class="veil"></div>
+      <div class="relative h-full flex flex-col justify-between p-7 md:p-8 text-white">
+        <div class="flex items-center justify-between">
+          <span class="chip">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            Chủ đề 01
+          </span>
+          <span class="text-[13px] tracking-[0.22em] uppercase opacity-80">~3 phút</span>
+        </div>
+
+        <div>
+          <p class="font-serif italic text-base md:text-lg opacity-85 mb-3">Khảo sát thói quen</p>
+          <h2 class="font-display font-light text-3xl md:text-4xl leading-[1.05] tracking-tight mb-5">
+            Đọc sách<br>
+            <em class="italic font-normal opacity-90">cùng tôi nhé?</em>
+          </h2>
+          <p class="font-serif text-base md:text-lg leading-relaxed opacity-90 mb-7">
+            Một cuốn sách bạn từng cầm lên, một trang gấp dở, một mùa đọc đã đi qua —
+            chúng nói gì về bạn?
+          </p>
+          <span class="arrow">
+            Bắt đầu hành trình
+            <svg width="20" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M1 7h22M17 1l6 6-6 6"/></svg>
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Topic 2 — Văn hóa thế giới -->
+    <a href="lehoivanhoa.html"
+       class="topic-card topic-2 fade-in group block rounded-2xl shadow-[0_8px_30px_rgba(43,37,33,0.10)] hover:shadow-[0_24px_60px_rgba(181,112,74,0.28)] focus-visible:shadow-[0_24px_60px_rgba(181,112,74,0.28)] aspect-[3/4] md:aspect-[4/5] no-underline"
+       style="transition-delay: 80ms;">
+      <div class="cover"></div>
+      <div class="veil"></div>
+      <div class="relative h-full flex flex-col justify-between p-7 md:p-8 text-white">
+        <div class="flex items-center justify-between">
+          <span class="chip">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            Chủ đề 02
+          </span>
+          <span class="text-[13px] tracking-[0.22em] uppercase opacity-80">~5 phút</span>
+        </div>
+
+        <div>
+          <p class="font-serif italic text-base md:text-lg opacity-85 mb-3">Khảo sát trải nghiệm</p>
+          <h2 class="font-display font-light text-3xl md:text-4xl leading-[1.05] tracking-tight mb-5">
+            Lễ hội<br>
+            <em class="italic font-normal opacity-90">văn hoá thế giới</em>
+          </h2>
+          <p class="font-serif text-base md:text-lg leading-relaxed opacity-90 mb-7">
+            Một vùng đất chưa đặt chân tới, một nghi lễ đã từng nghe kể —
+            điều gì khiến bạn tò mò về một thế giới khác?
+          </p>
+          <span class="arrow">
+            Khám phá ngay
+            <svg width="20" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M1 7h22M17 1l6 6-6 6"/></svg>
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Topic 3 — Chữa lành -->
+    <a href="khaosatchualanh.html"
+       class="topic-card topic-3 fade-in group block rounded-2xl shadow-[0_8px_30px_rgba(43,37,33,0.10)] hover:shadow-[0_24px_60px_rgba(63,78,63,0.28)] focus-visible:shadow-[0_24px_60px_rgba(63,78,63,0.28)] aspect-[3/4] md:aspect-[4/5] no-underline"
+       style="transition-delay: 160ms;">
+      <div class="cover"></div>
+      <div class="veil"></div>
+      <div class="relative h-full flex flex-col justify-between p-7 md:p-8 text-white">
+        <div class="flex items-center justify-between">
+          <span class="chip">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            Chủ đề 03
+          </span>
+          <span class="text-[13px] tracking-[0.22em] uppercase opacity-80">~3 phút</span>
+        </div>
+
+        <div>
+          <p class="font-serif italic text-base md:text-lg opacity-85 mb-3">Một khoảng lặng</p>
+          <h2 class="font-display font-light text-3xl md:text-4xl leading-[1.05] tracking-tight mb-5">
+            Dạo này<br>
+            <em class="italic font-normal opacity-90">bạn thế nào?</em>
+          </h2>
+          <p class="font-serif text-base md:text-lg leading-relaxed opacity-90 mb-7">
+            Không phán xét. Không câu trả lời đúng sai.
+            Chỉ là một khoảng lặng để bạn được là chính mình.
+          </p>
+          <span class="arrow">
+            Lắng nghe chính mình
+            <svg width="20" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M1 7h22M17 1l6 6-6 6"/></svg>
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Topic 4 — Dạy con theo phương pháp Do Thái -->
+    <a href="daycon-do-thai.html"
+       class="topic-card topic-4 fade-in group block rounded-2xl shadow-[0_8px_30px_rgba(43,37,33,0.10)] hover:shadow-[0_24px_60px_rgba(82,64,43,0.28)] focus-visible:shadow-[0_24px_60px_rgba(82,64,43,0.28)] aspect-[3/4] md:aspect-[4/5] no-underline"
+       style="transition-delay: 240ms;">
+      <div class="cover"></div>
+      <div class="veil"></div>
+      <div class="relative h-full flex flex-col justify-between p-7 md:p-8 text-white">
+        <div class="flex items-center justify-between">
+          <span class="chip">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 4l9 6.5"/><path d="M5 10v9h14v-9"/><path d="M9 19v-5h6v5"/></svg>
+            Chủ đề 04
+          </span>
+          <span class="text-[13px] tracking-[0.22em] uppercase opacity-80">~4 phút</span>
+        </div>
+
+        <div>
+          <p class="font-serif italic text-base md:text-lg opacity-85 mb-3">Khảo sát gia đình</p>
+          <h2 class="font-display font-light text-3xl md:text-4xl leading-[1.05] tracking-tight mb-5">
+            Dạy con<br>
+            <em class="italic font-normal opacity-90">kiểu Do Thái?</em>
+          </h2>
+          <p class="font-serif text-base md:text-lg leading-relaxed opacity-90 mb-7">
+            Bạn mong con tự lập, ham học hỏi và biết đặt câu hỏi như thế nào trong đời sống hằng ngày?
+          </p>
+          <span class="arrow">
+            Bắt đầu khảo sát
+            <svg width="20" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M1 7h22M17 1l6 6-6 6"/></svg>
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Topic 5 — Lựa chọn đúng -->
+    <a href="lua-chon-dung.html"
+       class="topic-card topic-5 fade-in group block rounded-2xl shadow-[0_8px_30px_rgba(43,37,33,0.10)] hover:shadow-[0_24px_60px_rgba(55,62,72,0.28)] focus-visible:shadow-[0_24px_60px_rgba(55,62,72,0.28)] aspect-[3/4] md:aspect-[4/5] no-underline"
+       style="transition-delay: 320ms;">
+      <div class="cover"></div>
+      <div class="veil"></div>
+      <div class="relative h-full flex flex-col justify-between p-7 md:p-8 text-white">
+        <div class="flex items-center justify-between">
+          <span class="chip">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m9 12 2 2 4-5"/><path d="M21 12a9 9 0 1 1-6.32-8.6"/></svg>
+            Chủ đề 05
+          </span>
+          <span class="text-[13px] tracking-[0.22em] uppercase opacity-80">~4 phút</span>
+        </div>
+
+        <div>
+          <p class="font-serif italic text-base md:text-lg opacity-85 mb-3">Khảo sát lựa chọn</p>
+          <h2 class="font-display font-light text-3xl md:text-4xl leading-[1.05] tracking-tight mb-5">
+            Lựa chọn<br>
+            <em class="italic font-normal opacity-90">đúng trong đời</em>
+          </h2>
+          <p class="font-serif text-base md:text-lg leading-relaxed opacity-90 mb-7">
+            Có một quyển sách từng giúp nhiều người tìm lại tiêu chuẩn sống, sự khôn ngoan và bình an.
+          </p>
+          <span class="arrow">
+            Bắt đầu nhìn lại
+            <svg width="20" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M1 7h22M17 1l6 6-6 6"/></svg>
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Topic 6 — Nỗi sợ tương lai -->
+    <a href="noi-so-tuong-lai.html"
+       class="topic-card topic-6 fade-in group block rounded-2xl shadow-[0_8px_30px_rgba(43,37,33,0.10)] hover:shadow-[0_24px_60px_rgba(75,96,111,0.28)] focus-visible:shadow-[0_24px_60px_rgba(75,96,111,0.28)] aspect-[3/4] md:aspect-[4/5] no-underline"
+       style="transition-delay: 400ms;">
+      <div class="cover"></div>
+      <div class="veil"></div>
+      <div class="relative h-full flex flex-col justify-between p-7 md:p-8 text-white">
+        <div class="flex items-center justify-between">
+          <span class="chip">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6"/><path d="M12 16v6"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="M2 12h6"/><path d="M16 12h6"/><path d="m4.93 19.07 4.24-4.24"/><path d="m14.83 9.17 4.24-4.24"/></svg>
+            Chủ đề 06
+          </span>
+          <span class="text-[13px] tracking-[0.22em] uppercase opacity-80">~4 phút</span>
+        </div>
+
+        <div>
+          <p class="font-serif italic text-base md:text-lg opacity-85 mb-3">Khảo sát bình an</p>
+          <h2 class="font-display font-light text-3xl md:text-4xl leading-[1.05] tracking-tight mb-5">
+            Nỗi sợ<br>
+            <em class="italic font-normal opacity-90">tương lai</em>
+          </h2>
+          <p class="font-serif text-base md:text-lg leading-relaxed opacity-90 mb-7">
+            Khi nghĩ về ngày mai, điều gì khiến lòng bạn bất an — và đâu có thể là điểm tựa thật sự?
+          </p>
+          <span class="arrow">
+            Nhìn về ngày mai
+            <svg width="20" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M1 7h22M17 1l6 6-6 6"/></svg>
+          </span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- Helper note -->
+  <p class="text-center text-muted text-base md:text-lg mt-10 max-w-xl mx-auto fade-in font-serif italic">
+    Bạn có thể lựa chọn một chủ đề mà bạn cảm thấy quan tâm nhất với mình lúc này — không cần phải làm tất cả.
+  </p>
+</section>
+
+<!-- Footer note -->
+<footer class="relative z-10 px-6 md:px-12 pb-12">
+  <div class="max-w-5xl mx-auto pt-10 border-t border-cream-deep flex flex-col md:flex-row items-center justify-between gap-4 text-muted text-[12px] tracking-[0.18em] uppercase">
+    <span>Một buổi gặp gỡ · Mùa 2026</span>
+    <span class="font-serif italic normal-case tracking-normal text-[14px]">"Đôi khi chỉ cần một khoảng lặng đủ an toàn để nhìn lại chính mình."</span>
+    <span>Made with care</span>
+  </div>
+</footer>
+
+<script>
+  // Fade-in on intersection
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('is-visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-in').forEach(el => io.observe(el));
+</script>
+</body>
+</html>

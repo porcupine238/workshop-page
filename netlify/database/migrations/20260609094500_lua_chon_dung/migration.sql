@@ -1,0 +1,21 @@
+CREATE TABLE "lua_chon_dung_responses" (
+	"id" serial PRIMARY KEY,
+	"name" text,
+	"contact" text,
+	"surveyor" text,
+	"submitter_ip" text,
+	"user_agent" text,
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"q1" text,
+	"q2" text,
+	"q3" text,
+	"q4" jsonb,
+	"q5" text,
+	"q6" text,
+	"q7" text,
+	"q8" text,
+	"q9" text,
+	"q10" text,
+	"format" text,
+	"interested" text
+);

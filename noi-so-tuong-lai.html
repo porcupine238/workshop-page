@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Nỗi Sợ Tương Lai — Khảo Sát</title>
+<meta name="description" content="Khảo sát ngắn giúp bạn nhìn lại nỗi lo về tương lai và điều gì có thể trở thành điểm tựa thật sự." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Inter', 'sans-serif'],
+          serif: ['EB Garamond', 'serif'],
+          display: ['Cormorant Garamond', 'serif'],
+        },
+        colors: {
+          paper: '#f0e6d2',
+          'paper-warm': '#e8d9b5',
+          leather: '#5c3a1f',
+          'leather-dark': '#3a2515',
+          ink: '#2a1f15',
+          'ink-soft': '#4a3a2a',
+          gold: '#b8860b',
+          'gold-light': '#d4a755',
+          'gold-pale': '#e8c87a',
+          'dark-bg': '#1a120a',
+          'dark-text': '#f0e6d2',
+          dawn: '#7f9aa7',
+        }
+      }
+    }
+  }
+</script>
+
+<style type="text/tailwindcss">
+  @layer base {
+    body {
+      @apply font-serif bg-paper text-ink overflow-x-hidden leading-relaxed text-[20px] antialiased;
+    }
+  }
+
+  @layer components {
+    .bg-noise::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 4;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='6'/><feColorMatrix values='0 0 0 0 0.35  0 0 0 0 0.28  0 0 0 0 0.18  0 0 0 0.16 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+      mix-blend-mode: multiply;
+      @apply opacity-30;
+    }
+
+    .bg-vignette::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 3;
+      background: radial-gradient(ellipse at center, transparent 48%, rgba(58,37,21,.2) 100%);
+    }
+
+    .bg-overlay-dark::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(26, 18, 10, 0.9) 0%, rgba(26, 18, 10, 0.72) 52%, rgba(26, 18, 10, 0.62) 100%);
+      z-index: 1;
+    }
+
+    .bg-overlay-light::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(240, 230, 210, 0.72);
+      z-index: 1;
+    }
+
+    label.cursor-pointer {
+      transition: background-color .35s ease, border-color .35s ease,
+                  transform .35s cubic-bezier(.4,0,.2,1), box-shadow .35s ease;
+    }
+    label.cursor-pointer:has(input[class*="checked:bg-gold-light"]:checked) {
+      background-color: rgba(212, 167, 85, 0.18) !important;
+      border-color: rgba(212, 167, 85, 0.7) !important;
+      box-shadow: 0 8px 28px rgba(0, 0, 0, .35), inset 0 0 0 1px rgba(212, 167, 85, .18);
+    }
+    label.cursor-pointer:has(input[class*="checked:bg-gold-light"]:checked) span {
+      color: #f0e0b8;
+    }
+    label.cursor-pointer input[class*="checked:bg-gold-light"]:checked {
+      background-color: #d4a755 !important;
+      border-color: #d4a755 !important;
+      box-shadow: 0 0 0 4px rgba(212, 167, 85, .25);
+    }
+    label.cursor-pointer input[class*="checked:bg-gold-light"][type="radio"]:checked::after {
+      content: '';
+      position: absolute;
+      inset: 3px;
+      background: #1a120a;
+      border-radius: 50%;
+    }
+    label.cursor-pointer input[class*="checked:bg-gold-light"][type="checkbox"]:checked::after {
+      content: '✓';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      color: #1a120a;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1;
+    }
+  }
+
+  .bg-grad-hero    { background-image: url('https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&q=80&w=2200'); background-size: cover; background-position: center; }
+  .bg-grad-quote   { background-image: url('https://images.unsplash.com/photo-1519682337058-a94d519337bc?auto=format&fit=crop&q=80&w=2200'); background-size: cover; background-position: center; }
+  .bg-grad-paper   { background-image: url('https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&q=80&w=2200'); background-size: cover; background-position: center; }
+  .bg-grad-q1      { background-image: url('https://images.unsplash.com/photo-1490730141103-6cac27aaab94?auto=format&fit=crop&q=80&w=2200'); background-size: cover; background-position: center; }
+  .bg-grad-q2      { background-image: url('https://images.unsplash.com/photo-1497215842964-222b430dc094?auto=format&fit=crop&q=80&w=2200'); background-size: cover; background-position: center; }
+  .bg-grad-q3      { background-image: url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&q=80&w=2200'); background-size: cover; background-position: center; }
+  .bg-grad-q4      { background-image: url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&q=80&w=2200'); background-size: cover; background-position: center; }
+  .bg-grad-q5      { background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=2200'); background-size: cover; background-position: center; }
+  .bg-grad-q6      { background-image: url('https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?auto=format&fit=crop&q=80&w=2200'); background-size: cover; background-position: center; }
+  .bg-grad-q7      { background-image: url('https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?auto=format&fit=crop&q=80&w=2200'); background-size: cover; background-position: center; }
+  .bg-grad-q8      { background-image: url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&q=80&w=2200'); background-size: cover; background-position: center; }
+  .bg-grad-q9      { background-image: url('https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=2200'); background-size: cover; background-position: center; }
+  .bg-grad-q10     { background-image: url('https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&q=80&w=2200'); background-size: cover; background-position: center; }
+  .bg-grad-contact { background-image: url('https://images.unsplash.com/photo-1499002238440-d264edd596ec?auto=format&fit=crop&q=80&w=2200'); background-size: cover; background-position: center; }
+  .bg-grad-reveal  { background-image: url('https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&q=80&w=2200'); background-size: cover; background-position: center; }
+
+  @keyframes bobble {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+  }
+  .scroll-hint { animation: bobble 2.5s ease-in-out infinite; }
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s ease, transform 1s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .bg-layer {
+    opacity: 0;
+    transition: opacity 1.4s cubic-bezier(.4,0,.2,1);
+  }
+  .bg-layer.active { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div class="fixed inset-0 z-0 bg-noise bg-vignette overflow-hidden" id="bgStage">
+  <div class="bg-layer bg-grad-hero bg-overlay-dark absolute inset-0 active" data-bg="hero"></div>
+  <div class="bg-layer bg-grad-quote bg-overlay-dark absolute inset-0" data-bg="quote"></div>
+  <div class="bg-layer bg-grad-paper bg-overlay-light absolute inset-0" data-bg="paper"></div>
+  <div class="bg-layer bg-grad-q1 bg-overlay-dark absolute inset-0" data-bg="q1"></div>
+  <div class="bg-layer bg-grad-q2 bg-overlay-dark absolute inset-0" data-bg="q2"></div>
+  <div class="bg-layer bg-grad-q3 bg-overlay-dark absolute inset-0" data-bg="q3"></div>
+  <div class="bg-layer bg-grad-q4 bg-overlay-dark absolute inset-0" data-bg="q4"></div>
+  <div class="bg-layer bg-grad-q5 bg-overlay-dark absolute inset-0" data-bg="q5"></div>
+  <div class="bg-layer bg-grad-q6 bg-overlay-dark absolute inset-0" data-bg="q6"></div>
+  <div class="bg-layer bg-grad-q7 bg-overlay-dark absolute inset-0" data-bg="q7"></div>
+  <div class="bg-layer bg-grad-q8 bg-overlay-dark absolute inset-0" data-bg="q8"></div>
+  <div class="bg-layer bg-grad-q9 bg-overlay-dark absolute inset-0" data-bg="q9"></div>
+  <div class="bg-layer bg-grad-q10 bg-overlay-dark absolute inset-0" data-bg="q10"></div>
+  <div class="bg-layer bg-grad-contact bg-overlay-dark absolute inset-0" data-bg="contact"></div>
+  <div class="bg-layer bg-grad-reveal bg-overlay-dark absolute inset-0" data-bg="reveal"></div>
+</div>
+
+<header id="topBar" class="fixed top-0 inset-x-0 z-50 px-6 md:px-12 py-6 flex justify-between items-center pointer-events-none transition-colors duration-800 text-dark-text">
+  <div class="font-display font-medium text-base tracking-[0.2em] uppercase">
+    Wonder <span class="italic text-gold-light px-1.5">·</span> of <span class="italic text-gold-light px-1.5">·</span> World
+  </div>
+  <div id="progressCont" class="font-sans text-[11px] tracking-[0.15em] uppercase px-4 py-2 border border-gold-light/30 bg-dark-bg/40 rounded-full backdrop-blur-md transition-all duration-800">
+    <b id="progressNum" class="text-gold-light font-semibold">01</b> / 11
+  </div>
+</header>
+
+<main id="mainContent" class="relative z-10 w-full">
+  <section class="min-h-screen px-6 md:px-12 flex items-center relative" data-bg="hero">
+    <div class="max-w-3xl md:ml-[8%] fade-in">
+      <div class="font-sans text-xs tracking-[0.25em] text-gold-light uppercase mb-6 font-medium">Khảo sát · Một khoảng nhìn về ngày mai</div>
+      <h1 class="font-display font-normal text-5xl md:text-8xl text-dark-text leading-tight mb-8 tracking-tighter">
+        Nỗi sợ <em class="italic text-gold-light">tương lai</em>
+      </h1>
+      <p class="text-lg md:text-xl leading-loose text-dark-text/80 mb-10 max-w-xl italic">
+        Tương lai là điều ai cũng phải bước đến, nhưng không ai có thể kiểm soát hoàn toàn. Hãy dành vài phút để nhìn lại nỗi lo của mình và điều gì có thể trở thành điểm tựa thật sự.
+      </p>
+      <div class="flex items-center gap-3 text-dark-text/80 text-sm tracking-widest font-sans before:content-['❦'] before:text-gold-light">
+        10 câu hỏi · 4 phút · Không phán xét
+      </div>
+    </div>
+    <div class="scroll-hint absolute bottom-9 left-1/2 -translate-x-1/2 text-dark-text/60 font-sans text-[11px] tracking-[0.3em] uppercase flex flex-col items-center gap-3">
+      <span>Lật trang</span>
+      <div class="w-px h-10 bg-gradient-to-b from-gold-light to-transparent"></div>
+    </div>
+  </section>
+
+  <form id="survey">
+    <section class="min-h-screen px-6 md:px-12 py-32 flex items-center relative" data-bg="q1" data-progress="01">
+      <div class="max-w-3xl md:ml-[8%] fade-in">
+        <div class="font-sans text-xs tracking-[0.25em] text-gold-light uppercase mb-6 font-medium">Câu hỏi 01</div>
+        <h2 class="font-display text-4xl md:text-6xl text-dark-text leading-tight mb-8">Khi nghĩ về tương lai, cảm xúc nào gần với bạn nhất?</h2>
+        <div class="grid gap-3 max-w-xl" data-name="q1" data-type="radio">
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q1" value="hy_vong"><span>Hy vọng</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q1" value="lo_lang"><span>Lo lắng</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q1" value="ap_luc"><span>Áp lực</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q1" value="mong_lung"><span>Mông lung</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q1" value="binh_an"><span>Bình an</span></label>
+        </div>
+      </div>
+    </section>
+
+    <section class="min-h-screen px-6 md:px-12 py-32 flex items-center relative" data-bg="q2" data-progress="02">
+      <div class="max-w-3xl md:ml-[8%] fade-in">
+        <div class="font-sans text-xs tracking-[0.25em] text-gold-light uppercase mb-6 font-medium">Câu hỏi 02</div>
+        <h2 class="font-display text-4xl md:text-6xl text-dark-text leading-tight mb-8">Điều gì khiến bạn lo lắng nhất về tương lai?</h2>
+        <div class="grid gap-3 max-w-xl" data-name="q2" data-type="radio">
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q2" value="cong_viec_tai_chinh"><span>Công việc và tài chính</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q2" value="gia_dinh_moi_quan_he"><span>Gia đình và các mối quan hệ</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q2" value="suc_khoe"><span>Sức khỏe</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q2" value="bien_dong_xa_hoi"><span>Những biến động của xã hội, thế giới</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q2" value="khong_biet_di_ve_dau"><span>Không biết cuộc đời mình sẽ đi về đâu</span></label>
+        </div>
+      </div>
+    </section>
+
+    <section class="min-h-screen px-6 md:px-12 py-32 flex items-center relative" data-bg="q3" data-progress="03">
+      <div class="max-w-3xl md:ml-[8%] fade-in">
+        <div class="font-sans text-xs tracking-[0.25em] text-gold-light uppercase mb-6 font-medium">Câu hỏi 03</div>
+        <h2 class="font-display text-4xl md:text-6xl text-dark-text leading-tight mb-8">Bạn có thường cảm thấy mình phải mạnh mẽ, dù bên trong đang rất mệt không?</h2>
+        <div class="grid gap-3 max-w-xl" data-name="q3" data-type="radio">
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q3" value="rat_thuong_xuyen"><span>Rất thường xuyên</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q3" value="thinh_thoang"><span>Thỉnh thoảng</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q3" value="giai_doan_ap_luc"><span>Chỉ trong những giai đoạn áp lực</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q3" value="hiem_khi"><span>Hiếm khi</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q3" value="gan_nhu_khong"><span>Gần như không</span></label>
+        </div>
+      </div>
+    </section>
+
+    <section class="min-h-screen px-6 md:px-12 py-32 flex items-center relative" data-bg="q4" data-progress="04">
+      <div class="max-w-3xl md:ml-[8%] fade-in">
+        <div class="font-sans text-xs tracking-[0.25em] text-gold-light uppercase mb-6 font-medium">Câu hỏi 04</div>
+        <h2 class="font-display text-4xl md:text-6xl text-dark-text leading-tight mb-8">Khi bất an về tương lai, bạn thường làm gì?</h2>
+        <div class="grid gap-3 max-w-xl" data-name="q4" data-type="radio">
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q4" value="lap_ke_hoach"><span>Lập kế hoạch và tìm cách giải quyết</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q4" value="tam_su"><span>Tâm sự với người thân hoặc bạn bè</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q4" value="lam_ban_ron"><span>Cố làm mình bận rộn để không nghĩ đến nữa</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q4" value="diem_tua_tinh_than"><span>Cầu nguyện hoặc tìm kiếm điểm tựa tinh thần</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q4" value="giu_trong_long"><span>Giữ trong lòng một mình</span></label>
+        </div>
+      </div>
+    </section>
+
+    <section class="min-h-screen px-6 md:px-12 py-32 flex items-center relative" data-bg="q5" data-progress="05">
+      <div class="max-w-3xl md:ml-[8%] fade-in">
+        <div class="font-sans text-xs tracking-[0.25em] text-gold-light uppercase mb-6 font-medium">Câu hỏi 05</div>
+        <h2 class="font-display text-4xl md:text-6xl text-dark-text leading-tight mb-8">Có bao giờ bạn cảm thấy dù đã cố gắng chuẩn bị, lòng mình vẫn chưa thật sự bình an không?</h2>
+        <div class="grid gap-3 max-w-xl" data-name="q5" data-type="radio">
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q5" value="rat_thuong_xuyen"><span>Có, rất thường xuyên</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q5" value="thinh_thoang"><span>Có, thỉnh thoảng</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q5" value="chuyen_lon"><span>Chỉ khi gặp chuyện lớn</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q5" value="hiem_khi"><span>Hiếm khi</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q5" value="chua_tung"><span>Chưa từng</span></label>
+        </div>
+      </div>
+    </section>
+
+    <section class="min-h-screen px-6 md:px-12 py-32 flex items-center relative" data-bg="q6" data-progress="06">
+      <div class="max-w-3xl md:ml-[8%] fade-in">
+        <div class="font-sans text-xs tracking-[0.25em] text-gold-light uppercase mb-6 font-medium">Câu hỏi 06</div>
+        <h2 class="font-display text-4xl md:text-6xl text-dark-text leading-tight mb-8">Theo bạn, điều gì giúp một người vững lòng trước tương lai?</h2>
+        <p class="text-dark-text/75 italic mb-6">Bạn có thể chọn nhiều câu trả lời.</p>
+        <div class="grid gap-3 max-w-xl" data-name="q6" data-type="checkbox">
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-md border-2 border-gold-light/40 checked:bg-gold-light" type="checkbox" value="ke_hoach_ro_rang"><span>Có kế hoạch rõ ràng</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-md border-2 border-gold-light/40 checked:bg-gold-light" type="checkbox" value="tai_chinh_on_dinh"><span>Có tài chính ổn định</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-md border-2 border-gold-light/40 checked:bg-gold-light" type="checkbox" value="nguoi_dong_hanh"><span>Có người đồng hành</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-md border-2 border-gold-light/40 checked:bg-gold-light" type="checkbox" value="niem_tin_vung_chac"><span>Có niềm tin vững chắc</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-md border-2 border-gold-light/40 checked:bg-gold-light" type="checkbox" value="binh_an_trong_long"><span>Có sự bình an trong lòng</span></label>
+        </div>
+      </div>
+    </section>
+
+    <section class="min-h-screen px-6 md:px-12 py-32 flex items-center relative" data-bg="q7" data-progress="07">
+      <div class="max-w-3xl md:ml-[8%] fade-in">
+        <div class="font-sans text-xs tracking-[0.25em] text-gold-light uppercase mb-6 font-medium">Câu hỏi 07</div>
+        <h2 class="font-display text-4xl md:text-6xl text-dark-text leading-tight mb-8">Bạn có từng mong có một lời hứa hoặc một điểm tựa chắc chắn để không còn quá sợ hãi trước điều chưa biết không?</h2>
+        <div class="grid gap-3 max-w-xl" data-name="q7" data-type="radio">
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q7" value="rat_can"><span>Có, tôi rất cần điều đó</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q7" value="luc_kho_khan"><span>Có, nhất là trong những lúc khó khăn</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q7" value="thinh_thoang"><span>Thỉnh thoảng tôi từng nghĩ đến</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q7" value="chua_nghi_sau"><span>Tôi chưa từng nghĩ sâu về điều này</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q7" value="khong_chac"><span>Tôi không chắc</span></label>
+        </div>
+      </div>
+    </section>
+
+    <section class="min-h-screen px-6 md:px-12 py-32 flex items-center relative" data-bg="q8" data-progress="08">
+      <div class="max-w-3xl md:ml-[8%] fade-in">
+        <div class="font-sans text-xs tracking-[0.25em] text-gold-light uppercase mb-6 font-medium">Câu hỏi 08</div>
+        <h2 class="font-display text-4xl md:text-6xl text-dark-text leading-tight mb-8">Khi nhìn vào những biến động của thế giới, bạn cảm thấy thế nào?</h2>
+        <div class="grid gap-3 max-w-xl" data-name="q8" data-type="radio">
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q8" value="kho_doan"><span>Lo lắng vì mọi thứ quá khó đoán</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q8" value="bat_an"><span>Bất an nhưng không biết làm gì</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q8" value="khong_quan_tam"><span>Tôi cố không quan tâm quá nhiều</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q8" value="se_on"><span>Tôi tin mọi chuyện rồi sẽ ổn</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q8" value="muon_hieu_y_nghia"><span>Tôi muốn hiểu rõ hơn ý nghĩa của những điều đang xảy ra</span></label>
+        </div>
+      </div>
+    </section>
+
+    <section class="min-h-screen px-6 md:px-12 py-32 flex items-center relative" data-bg="q9" data-progress="09">
+      <div class="max-w-3xl md:ml-[8%] fade-in">
+        <div class="font-sans text-xs tracking-[0.25em] text-gold-light uppercase mb-6 font-medium">Câu hỏi 09</div>
+        <h2 class="font-display text-4xl md:text-6xl text-dark-text leading-tight mb-8">Nếu có một cuốn sách chứa đựng những lời dạy giúp con người hiểu về tương lai, giữ lòng bình an và sống có hy vọng, bạn có muốn tìm hiểu không?</h2>
+        <div class="grid gap-3 max-w-xl" data-name="q9" data-type="radio">
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q9" value="rat_muon"><span>Có, tôi rất muốn</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q9" value="thuc_te_de_hieu"><span>Có, nếu điều đó thực tế và dễ hiểu</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q9" value="to_mo"><span>Tôi tò mò muốn nghe thử</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q9" value="chua_chac"><span>Tôi chưa chắc</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="q9" value="chua_san_sang"><span>Hiện tại tôi chưa sẵn sàng</span></label>
+        </div>
+      </div>
+    </section>
+
+    <section class="min-h-screen px-6 md:px-12 py-32 flex items-center relative" data-bg="q10" data-progress="10">
+      <div class="max-w-3xl md:ml-[8%] fade-in">
+        <div class="font-sans text-xs tracking-[0.25em] text-gold-light uppercase mb-6 font-medium">Câu hỏi 10</div>
+        <h2 class="font-display text-4xl md:text-6xl text-dark-text leading-tight mb-8">Bạn có từng nghĩ rằng một cuốn sách cổ xưa vẫn có thể chứa đựng hy vọng, lời hứa và sự bình an cho tương lai không?</h2>
+        <div class="grid gap-3 max-w-xl" data-name="interested" data-type="radio">
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="interested" value="tung_nghe"><span>Có, tôi từng nghe nói</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="interested" value="chua_tim_hieu"><span>Tôi có nghe nhưng chưa tìm hiểu</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="interested" value="chua_biet"><span>Tôi chưa từng biết điều này</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="interested" value="muon_tim_hieu"><span>Tôi muốn tìm hiểu thêm</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="interested" value="chua_ro"><span>Tôi chưa có cảm nhận rõ ràng</span></label>
+        </div>
+      </div>
+    </section>
+
+    <section class="min-h-screen px-6 md:px-12 py-32 flex items-center relative" data-bg="contact" data-progress="11">
+      <div class="max-w-2xl md:ml-[8%] fade-in">
+        <div class="font-sans text-xs tracking-[0.25em] text-gold-light uppercase mb-6 font-medium">Thông tin liên hệ</div>
+        <h2 class="font-display text-4xl md:text-6xl text-dark-text leading-tight mb-8">Chỉ còn vài thông tin cuối</h2>
+        <p class="text-dark-text/80 italic mb-8">Để chúng tôi gửi thêm thông tin phù hợp cho bạn.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6" data-name="format" data-type="radio">
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="format" value="online"><span>Online</span></label>
+          <label class="cursor-pointer flex items-center gap-3 p-4 rounded-2xl border border-gold-light/20 bg-dark-bg/30 backdrop-blur-md text-dark-text/85"><input class="relative appearance-none w-5 h-5 rounded-full border-2 border-gold-light/40 checked:bg-gold-light" type="radio" name="format" value="offline"><span>Offline</span></label>
+        </div>
+        <div class="space-y-5">
+          <div>
+            <label for="userName" class="block font-sans text-xs tracking-[0.18em] uppercase text-dark-text/75 mb-2">Bạn tên là</label>
+            <input id="userName" class="w-full rounded-2xl border border-gold-light/25 bg-dark-bg/35 backdrop-blur-md px-5 py-4 text-dark-text placeholder:text-dark-text/40 outline-none focus:border-gold-light focus:ring-4 focus:ring-gold-light/20" type="text" autocomplete="name" placeholder="Họ và tên">
+          </div>
+          <div>
+            <label for="userContact" class="block font-sans text-xs tracking-[0.18em] uppercase text-dark-text/75 mb-2">SĐT / Email</label>
+            <input id="userContact" class="w-full rounded-2xl border border-gold-light/25 bg-dark-bg/35 backdrop-blur-md px-5 py-4 text-dark-text placeholder:text-dark-text/40 outline-none focus:border-gold-light focus:ring-4 focus:ring-gold-light/20" type="text" autocomplete="email" placeholder="0xxx... hoặc email@...">
+          </div>
+          <div>
+            <label for="surveyor" class="block font-sans text-xs tracking-[0.18em] uppercase text-dark-text/75 mb-2">Tên người khảo sát *</label>
+            <input id="surveyor" class="w-full rounded-2xl border border-gold-light/25 bg-dark-bg/35 backdrop-blur-md px-5 py-4 text-dark-text placeholder:text-dark-text/40 outline-none focus:border-gold-light focus:ring-4 focus:ring-gold-light/20" type="text" placeholder="Người đã giới thiệu khảo sát này" required>
+            <p id="formError" class="hidden mt-2 text-sm font-sans text-amber-200" role="alert">Vui lòng nhập tên người khảo sát.</p>
+          </div>
+          <button id="submitBtn" type="submit" class="w-full min-h-[58px] rounded-full bg-gold-light text-dark-bg font-sans text-sm font-semibold tracking-[0.16em] uppercase hover:bg-gold-pale disabled:opacity-60 disabled:cursor-not-allowed transition-colors">Gửi khảo sát</button>
+        </div>
+      </div>
+    </section>
+  </form>
+
+  <section id="thanksSection" class="min-h-screen px-6 md:px-12 py-32 hidden items-center justify-center text-center relative" data-bg="reveal">
+    <div class="max-w-3xl fade-in">
+      <div class="font-display italic text-lg text-gold-light tracking-widest mb-6">— Cảm ơn —</div>
+      <h2 class="font-display font-normal text-4xl md:text-6xl text-dark-text leading-tight mb-8">Chúng tôi đã nhận được<br><em class="italic text-gold-light">câu trả lời của bạn</em></h2>
+      <p class="text-dark-text/85 text-lg leading-relaxed mb-6">Hy vọng những câu hỏi này giúp bạn nhìn lại nỗi lo của mình, và mở ra một hướng tìm kiếm bình an thật qua những giá trị sâu sắc từ một cuốn sách đặc biệt.</p>
+      <p class="italic text-dark-text/75">"Tương lai không chỉ là điều phía trước,<br>mà còn là nơi lòng người cần một điểm tựa."</p>
+    </div>
+  </section>
+</main>
+
+<script>
+  const bgLayers = document.querySelectorAll('.bg-layer');
+  const sections = document.querySelectorAll('section[data-bg]');
+  const progressNum = document.getElementById('progressNum');
+  const progressCont = document.getElementById('progressCont');
+  const topBar = document.getElementById('topBar');
+
+  function getActiveSectionByScroll() {
+    const scrollMid = window.scrollY + window.innerHeight * 0.45;
+    let best = null;
+    sections.forEach(section => {
+      const top = section.offsetTop;
+      const bottom = top + section.offsetHeight;
+      if (scrollMid >= top && scrollMid < bottom) best = section;
+    });
+    return best || sections[0];
+  }
+
+  let lastBg = null;
+  function updateBackground() {
+    const active = getActiveSectionByScroll();
+    if (!active) return;
+    const bg = active.getAttribute('data-bg');
+    const prog = active.getAttribute('data-progress');
+    if (bg !== lastBg) {
+      lastBg = bg;
+      bgLayers.forEach(layer => layer.classList.toggle('active', layer.getAttribute('data-bg') === bg));
+    }
+    if (prog) progressNum.textContent = String(prog).padStart(2, '0');
+  }
+
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        updateBackground();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, { passive: true });
+  window.addEventListener('resize', updateBackground);
+  updateBackground();
+
+  const fadeObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.fade-in').forEach(el => fadeObserver.observe(el));
+
+  function collectGroup(group) {
+    const name = group.dataset.name;
+    const type = group.dataset.type;
+    if (type === 'radio') {
+      const checked = group.querySelector('input[type="radio"]:checked');
+      return [name, checked ? checked.value : null];
+    }
+    return [name, [...group.querySelectorAll('input[type="checkbox"]:checked')].map(input => input.value)];
+  }
+
+  function collectAnswers() {
+    const answers = {};
+    document.querySelectorAll('[data-name][data-type]').forEach(group => {
+      const [name, value] = collectGroup(group);
+      answers[name] = value;
+    });
+    answers.q10 = answers.interested;
+    return answers;
+  }
+
+  document.getElementById('survey').addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const surveyor = document.getElementById('surveyor').value.trim();
+    const error = document.getElementById('formError');
+    if (!surveyor) {
+      error.classList.remove('hidden');
+      document.getElementById('surveyor').focus();
+      return;
+    }
+    error.classList.add('hidden');
+
+    const btn = document.getElementById('submitBtn');
+    const original = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Đang gửi...';
+
+    const payload = {
+      survey: 'tuong_lai',
+      name: document.getElementById('userName').value.trim(),
+      contact: document.getElementById('userContact').value.trim(),
+      surveyor,
+      answers: collectAnswers(),
+    };
+
+    try {
+      const res = await fetch('/api/submit-survey', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+    } catch (err) {
+      console.error('submit error', err);
+      alert('Gửi không thành công. Vui lòng thử lại.');
+      btn.disabled = false;
+      btn.textContent = original;
+      return;
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => {
+      document.querySelectorAll('section:not(#thanksSection)').forEach(s => s.classList.add('hidden'));
+      document.getElementById('thanksSection').classList.remove('hidden');
+      document.getElementById('thanksSection').classList.add('flex');
+      bgLayers.forEach(layer => layer.classList.toggle('active', layer.getAttribute('data-bg') === 'reveal'));
+      progressNum.textContent = '✓';
+    }, 500);
+  });
+</script>
+</body>
+</html>

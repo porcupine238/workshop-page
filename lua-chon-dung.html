@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lựa Chọn Đúng Trong Cuộc Đời — Khảo Sát</title>
+<meta name="description" content="Khảo sát ngắn giúp bạn nhìn lại cách mình đưa ra lựa chọn, điều gì đang dẫn đường và nguồn khôn ngoan nào có thể đem lại bình an." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #12201c;
+    color: #f4ead5;
+    overflow-x: hidden;
+    line-height: 1.65;
+    font-size: 18px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .bg-stage {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background: #12201c;
+    overflow: hidden;
+  }
+  .bg-layer {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 1.4s cubic-bezier(.4,0,.2,1), transform 8s ease-out;
+    transform: scale(1.05);
+    background-position: center;
+    background-size: cover;
+  }
+  .bg-layer.active {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .bg-photo.active { opacity: .68; }
+  .bg-stage::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse at center, rgba(13,24,21,.08) 0%, rgba(13,24,21,.34) 58%, rgba(13,24,21,.72) 100%),
+      linear-gradient(90deg, rgba(13,24,21,.68) 0%, rgba(13,24,21,.26) 52%, rgba(13,24,21,.5) 100%),
+      linear-gradient(180deg, rgba(13,24,21,.34) 0%, rgba(13,24,21,.08) 35%, rgba(13,24,21,.58) 100%);
+  }
+  .bg-stage::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    opacity: .55;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.08 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+
+  .bg-base[data-bg="hero"]    { background: radial-gradient(ellipse at 60% 38%, #86bfb0 0%, #294b42 58%, #10211d 100%); }
+  .bg-base[data-bg="q1"]      { background: radial-gradient(ellipse at 35% 45%, #d6b779 0%, #5e6f49 62%, #17251a 100%); }
+  .bg-base[data-bg="q2"]      { background: radial-gradient(ellipse at 70% 30%, #8bc7d3 0%, #426978 64%, #122833 100%); }
+  .bg-base[data-bg="q3"]      { background: radial-gradient(ellipse at 50% 50%, #f0c58b 0%, #906a42 64%, #2b1d12 100%); }
+  .bg-base[data-bg="q4"]      { background: radial-gradient(ellipse at 40% 40%, #b8d89c 0%, #55784f 66%, #142719 100%); }
+  .bg-base[data-bg="q5"]      { background: radial-gradient(ellipse at 60% 50%, #f3d68a 0%, #9c874b 62%, #2b2614 100%); }
+  .bg-base[data-bg="q6"]      { background: radial-gradient(ellipse at 45% 50%, #c5d7ef 0%, #657b9b 64%, #1b2739 100%); }
+  .bg-base[data-bg="q7"]      { background: radial-gradient(ellipse at 55% 45%, #bcd6b2 0%, #607e5b 66%, #172a19 100%); }
+  .bg-base[data-bg="q8"]      { background: radial-gradient(ellipse at 45% 50%, #f1d08c 0%, #8c7443 64%, #2d2412 100%); }
+  .bg-base[data-bg="q9"]      { background: radial-gradient(ellipse at 50% 50%, #b2d8df 0%, #557d86 66%, #173037 100%); }
+  .bg-base[data-bg="q10"]     { background: radial-gradient(ellipse at 50% 50%, #e9c48a 0%, #977044 64%, #2c1e11 100%); }
+  .bg-base[data-bg="contact"] { background: radial-gradient(ellipse at 50% 50%, #d7c28e 0%, #766d47 66%, #272818 100%); }
+  .bg-base[data-bg="reveal"]  { background: radial-gradient(ellipse at 50% 45%, #f0d58b 0%, #7b8552 52%, #182a19 100%); }
+
+  .bg-photo[data-bg="hero"]    { background-image: url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&q=85&w=2200'); }
+  .bg-photo[data-bg="q1"]      { background-image: url('https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&q=85&w=2200'); }
+  .bg-photo[data-bg="q2"]      { background-image: url('https://images.unsplash.com/photo-1490730141103-6cac27aaab94?auto=format&fit=crop&q=85&w=2200'); }
+  .bg-photo[data-bg="q3"]      { background-image: url('https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&q=85&w=2200'); }
+  .bg-photo[data-bg="q4"]      { background-image: url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&q=85&w=2200'); }
+  .bg-photo[data-bg="q5"]      { background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=85&w=2200'); }
+  .bg-photo[data-bg="q6"]      { background-image: url('https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&q=85&w=2200'); }
+  .bg-photo[data-bg="q7"]      { background-image: url('https://images.unsplash.com/photo-1497215842964-222b430dc094?auto=format&fit=crop&q=85&w=2200'); }
+  .bg-photo[data-bg="q8"]      { background-image: url('https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?auto=format&fit=crop&q=85&w=2200'); }
+  .bg-photo[data-bg="q9"]      { background-image: url('https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?auto=format&fit=crop&q=85&w=2200'); }
+  .bg-photo[data-bg="q10"]     { background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=85&w=2200'); }
+  .bg-photo[data-bg="contact"] { background-image: url('https://images.unsplash.com/photo-1499002238440-d264edd596ec?auto=format&fit=crop&q=85&w=2200'); }
+  .bg-photo[data-bg="reveal"]  { background-image: url('https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&q=85&w=2200'); }
+
+  header.top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    padding: 24px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(180deg, rgba(8,9,11,.68) 0%, transparent 100%);
+    pointer-events: none;
+  }
+  .brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 18px;
+    letter-spacing: .15em;
+    color: #f4ead5;
+    text-transform: uppercase;
+  }
+  .brand span { color: #d4a55c; font-style: italic; }
+  .progress-pill {
+    font-size: 13px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: rgba(244,234,213,.72);
+    padding: 8px 14px;
+    border: 1px solid rgba(244,234,213,.2);
+    border-radius: 999px;
+    backdrop-filter: blur(8px);
+    background: rgba(8,9,11,.3);
+  }
+  .progress-pill b { color: #d4a55c; font-weight: 600; }
+
+  main { position: relative; z-index: 5; }
+  section.q-section {
+    min-height: 100vh;
+    padding: 140px 48px 120px;
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  .q-inner {
+    max-width: 760px;
+    width: 100%;
+    margin-left: 8%;
+  }
+  .q-eyebrow {
+    font-size: 13px;
+    letter-spacing: .35em;
+    text-transform: uppercase;
+    color: #d4a55c;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .q-eyebrow::before {
+    content: '';
+    width: 28px;
+    height: 1px;
+    background: #d4a55c;
+  }
+  .q-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: clamp(38px, 5vw, 64px);
+    line-height: 1.15;
+    color: #f8efd9;
+    margin-bottom: 22px;
+    letter-spacing: -.02em;
+  }
+  .q-title em {
+    color: #d4a55c;
+    font-style: italic;
+    font-weight: 400;
+  }
+  .q-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-style: italic;
+    color: rgba(248,239,217,.76);
+    margin-bottom: 34px;
+    max-width: 640px;
+  }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(56px, 8vw, 118px);
+    font-weight: 400;
+    line-height: .95;
+    letter-spacing: -.04em;
+    color: #f8efd9;
+    margin-bottom: 30px;
+  }
+  .hero-title em { color: #d4a55c; font-style: italic; }
+  .hero-copy {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(23px, 2vw, 32px);
+    font-style: italic;
+    color: rgba(248,239,217,.78);
+    max-width: 640px;
+    line-height: 1.45;
+    margin-bottom: 34px;
+  }
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: rgba(248,239,217,.75);
+    font-size: 13px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+  }
+  .meta::before {
+    content: '';
+    width: 28px;
+    height: 1px;
+    background: #d4a55c;
+  }
+  .scroll-hint {
+    position: absolute;
+    bottom: 34px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(248,239,217,.58);
+    font-size: 11px;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    animation: bobble 2.5s ease-in-out infinite;
+  }
+  .scroll-hint::after {
+    content: '';
+    width: 1px;
+    height: 42px;
+    background: linear-gradient(to bottom, #d4a55c, transparent);
+  }
+  @keyframes bobble {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+  }
+
+  .options {
+    display: grid;
+    gap: 13px;
+    max-width: 680px;
+  }
+  .options.two-col {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  label.opt {
+    min-height: 54px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 15px 18px;
+    border: 1px solid rgba(248,239,217,.18);
+    border-radius: 18px;
+    background: rgba(8,9,11,.28);
+    color: rgba(248,239,217,.82);
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    transition: background-color .35s ease, border-color .35s ease, transform .35s cubic-bezier(.4,0,.2,1), box-shadow .35s ease;
+  }
+  label.opt:hover {
+    transform: translateY(-2px);
+    border-color: rgba(212,165,92,.48);
+    background: rgba(212,165,92,.1);
+  }
+  label.opt:has(input:checked) {
+    background: rgba(212,165,92,.18);
+    border-color: rgba(212,165,92,.72);
+    box-shadow: 0 8px 28px rgba(0,0,0,.32), inset 0 0 0 1px rgba(212,165,92,.18);
+  }
+  label.opt:has(input:checked) span { color: #f8efd9; }
+  label.opt input {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(248,239,217,.35);
+    background: rgba(8,9,11,.35);
+    flex: 0 0 auto;
+    position: relative;
+  }
+  label.opt input[type="radio"] { border-radius: 999px; }
+  label.opt input[type="checkbox"] { border-radius: 6px; }
+  label.opt input:checked {
+    border-color: #d4a55c;
+    background: #d4a55c;
+    box-shadow: 0 0 0 4px rgba(212,165,92,.22);
+  }
+  label.opt input[type="radio"]:checked::after {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    background: #08090b;
+    border-radius: 50%;
+  }
+  label.opt input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 1px;
+    width: 7px;
+    height: 12px;
+    border: solid #08090b;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  .field {
+    width: 100%;
+    min-height: 54px;
+    padding: 15px 17px;
+    border: 1px solid rgba(248,239,217,.2);
+    border-radius: 18px;
+    background: rgba(8,9,11,.32);
+    color: #f8efd9;
+    font: inherit;
+    outline: none;
+    backdrop-filter: blur(10px);
+    transition: border-color .25s ease, box-shadow .25s ease, background .25s ease;
+  }
+  .field::placeholder { color: rgba(248,239,217,.42); }
+  .field:focus {
+    border-color: rgba(212,165,92,.78);
+    box-shadow: 0 0 0 4px rgba(212,165,92,.18);
+    background: rgba(8,9,11,.45);
+  }
+  .input-group { margin-bottom: 18px; }
+  .input-label {
+    display: block;
+    color: rgba(248,239,217,.76);
+    font-size: 13px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .submit-btn {
+    width: 100%;
+    min-height: 58px;
+    border: 0;
+    border-radius: 999px;
+    background: #d4a55c;
+    color: #100b07;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 16px 38px rgba(0,0,0,.28);
+    transition: transform .25s ease, background .25s ease, opacity .25s ease;
+  }
+  .submit-btn:hover { transform: translateY(-2px); background: #e5bd78; }
+  .submit-btn:disabled { opacity: .65; cursor: not-allowed; transform: none; }
+  .form-error {
+    display: none;
+    color: #e8a180;
+    font-size: 14px;
+    margin-top: 8px;
+  }
+  .form-error.visible { display: block; }
+  .thanks-section {
+    display: none;
+    min-height: 100vh;
+    padding: 140px 48px 120px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .thanks-card {
+    max-width: 760px;
+    padding: 44px 34px;
+    border: 1px solid rgba(248,239,217,.18);
+    border-radius: 28px;
+    background: rgba(8,9,11,.32);
+    backdrop-filter: blur(14px);
+  }
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s ease, transform 1s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .hidden { display: none !important; }
+
+  @media (max-width: 768px) {
+    body { font-size: 16px; }
+    header.top-bar { padding: 18px 20px; }
+    .brand { font-size: 15px; letter-spacing: .12em; }
+    .progress-pill { font-size: 11px; padding: 7px 11px; }
+    section.q-section, .thanks-section {
+      padding: 118px 22px 88px;
+      min-height: auto;
+    }
+    .q-inner {
+      margin-left: 0;
+      max-width: none;
+    }
+    .options.two-col { grid-template-columns: 1fr; }
+    .q-title { font-size: clamp(34px, 12vw, 48px); }
+    .q-sub { font-size: 21px; }
+    .hero-title { font-size: clamp(48px, 16vw, 72px); }
+    .hero-copy { font-size: 23px; }
+    .scroll-hint { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
+    .fade-in { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+<div class="bg-stage" id="bgStage">
+  <div class="bg-layer bg-base active" data-bg="hero"></div><div class="bg-layer bg-photo active" data-bg="hero"></div>
+  <div class="bg-layer bg-base" data-bg="q1"></div><div class="bg-layer bg-photo" data-bg="q1"></div>
+  <div class="bg-layer bg-base" data-bg="q2"></div><div class="bg-layer bg-photo" data-bg="q2"></div>
+  <div class="bg-layer bg-base" data-bg="q3"></div><div class="bg-layer bg-photo" data-bg="q3"></div>
+  <div class="bg-layer bg-base" data-bg="q4"></div><div class="bg-layer bg-photo" data-bg="q4"></div>
+  <div class="bg-layer bg-base" data-bg="q5"></div><div class="bg-layer bg-photo" data-bg="q5"></div>
+  <div class="bg-layer bg-base" data-bg="q6"></div><div class="bg-layer bg-photo" data-bg="q6"></div>
+  <div class="bg-layer bg-base" data-bg="q7"></div><div class="bg-layer bg-photo" data-bg="q7"></div>
+  <div class="bg-layer bg-base" data-bg="q8"></div><div class="bg-layer bg-photo" data-bg="q8"></div>
+  <div class="bg-layer bg-base" data-bg="q9"></div><div class="bg-layer bg-photo" data-bg="q9"></div>
+  <div class="bg-layer bg-base" data-bg="q10"></div><div class="bg-layer bg-photo" data-bg="q10"></div>
+  <div class="bg-layer bg-base" data-bg="contact"></div><div class="bg-layer bg-photo" data-bg="contact"></div>
+  <div class="bg-layer bg-base" data-bg="reveal"></div><div class="bg-layer bg-photo" data-bg="reveal"></div>
+</div>
+
+<header class="top-bar">
+  <div class="brand">Lựa chọn <span>·</span> đúng</div>
+  <div class="progress-pill"><b id="progressNum">01</b> / 11</div>
+</header>
+
+<main id="mainContent">
+  <section id="heroSection" class="q-section" data-bg="hero">
+    <div class="q-inner fade-in">
+      <div class="q-eyebrow">Khảo sát · Một quyển sách có giá trị</div>
+      <h1 class="hero-title">Lựa chọn đúng<br><em>trong cuộc đời</em></h1>
+      <p class="hero-copy">Có một quyển sách đã đem lại cho rất nhiều người tiêu chuẩn sống, sự khôn ngoan và cảm giác bình an khi phải đứng trước những quyết định quan trọng.</p>
+      <div class="meta">10 câu hỏi · 4 phút · Không cần trả lời hoàn hảo</div>
+    </div>
+    <div class="scroll-hint">Cuộn xuống</div>
+  </section>
+
+  <form id="survey">
+    <section class="q-section" data-bg="q1" data-progress="01">
+      <div class="q-inner fade-in">
+        <div class="q-eyebrow">Câu hỏi 01</div>
+        <h2 class="q-title">Khi đứng trước một lựa chọn quan trọng, bạn thường cảm thấy thế nào?</h2>
+        <p class="q-sub">Một câu hỏi nhỏ để nhìn lại cách trái tim mình phản ứng trước ngã rẽ.</p>
+        <div class="options" data-name="q1" data-type="radio">
+          <label class="opt"><input type="radio" name="q1" value="binh_tinh"><span>Bình tĩnh, vì tôi biết rõ điều mình muốn</span></label>
+          <label class="opt"><input type="radio" name="q1" value="phan_van"><span>Phân vân, vì sợ chọn sai</span></label>
+          <label class="opt"><input type="radio" name="q1" value="ap_luc"><span>Áp lực, vì sợ ảnh hưởng đến người khác</span></label>
+          <label class="opt"><input type="radio" name="q1" value="mong_lung"><span>Mông lung, vì không biết đâu là điều thật sự đúng</span></label>
+          <label class="opt"><input type="radio" name="q1" value="tri_hoan"><span>Tôi thường trì hoãn vì không muốn đối diện</span></label>
+        </div>
+      </div>
+    </section>
+
+    <section class="q-section" data-bg="q2" data-progress="02">
+      <div class="q-inner fade-in">
+        <div class="q-eyebrow">Câu hỏi 02</div>
+        <h2 class="q-title">Điều gì thường ảnh hưởng nhiều nhất đến quyết định của bạn?</h2>
+        <div class="options" data-name="q2" data-type="radio">
+          <label class="opt"><input type="radio" name="q2" value="ly_tri"><span>Lý trí và sự phân tích</span></label>
+          <label class="opt"><input type="radio" name="q2" value="cam_xuc"><span>Cảm xúc tại thời điểm đó</span></label>
+          <label class="opt"><input type="radio" name="q2" value="y_kien_nguoi_khac"><span>Ý kiến của gia đình, bạn bè hoặc xã hội</span></label>
+          <label class="opt"><input type="radio" name="q2" value="kinh_nghiem"><span>Kinh nghiệm trong quá khứ</span></label>
+          <label class="opt"><input type="radio" name="q2" value="gia_tri_song"><span>Niềm tin và giá trị sống của bản thân</span></label>
+        </div>
+      </div>
+    </section>
+
+    <section class="q-section" data-bg="q3" data-progress="03">
+      <div class="q-inner fade-in">
+        <div class="q-eyebrow">Câu hỏi 03</div>
+        <h2 class="q-title">Bạn có thường sợ mình sẽ hối tiếc sau khi đưa ra quyết định không?</h2>
+        <div class="options" data-name="q3" data-type="radio">
+          <label class="opt"><input type="radio" name="q3" value="rat_thuong_xuyen"><span>Rất thường xuyên</span></label>
+          <label class="opt"><input type="radio" name="q3" value="thinh_thoang"><span>Thỉnh thoảng</span></label>
+          <label class="opt"><input type="radio" name="q3" value="quyet_dinh_lon"><span>Chỉ với những quyết định lớn</span></label>
+          <label class="opt"><input type="radio" name="q3" value="hiem_khi"><span>Hiếm khi</span></label>
+          <label class="opt"><input type="radio" name="q3" value="gan_nhu_khong"><span>Gần như không</span></label>
+        </div>
+      </div>
+    </section>
+
+    <section class="q-section" data-bg="q4" data-progress="04">
+      <div class="q-inner fade-in">
+        <div class="q-eyebrow">Câu hỏi 04</div>
+        <h2 class="q-title">Theo bạn, một lựa chọn đúng thường cần có điều gì?</h2>
+        <p class="q-sub">Bạn có thể chọn nhiều câu trả lời.</p>
+        <div class="options" data-name="q4" data-type="checkbox">
+          <label class="opt"><input type="checkbox" value="thanh_cong"><span>Giúp mình thành công hơn</span></label>
+          <label class="opt"><input type="checkbox" value="binh_an"><span>Khiến mình cảm thấy bình an trong lòng</span></label>
+          <label class="opt"><input type="checkbox" value="khong_ton_thuong"><span>Không làm tổn thương bản thân và người khác</span></label>
+          <label class="opt"><input type="checkbox" value="thien_lanh"><span>Phù hợp với điều thiện lành</span></label>
+          <label class="opt"><input type="checkbox" value="duoc_cong_nhan"><span>Được nhiều người công nhận</span></label>
+        </div>
+      </div>
+    </section>
+
+    <section class="q-section" data-bg="q5" data-progress="05">
+      <div class="q-inner fade-in">
+        <div class="q-eyebrow">Câu hỏi 05</div>
+        <h2 class="q-title">Có bao giờ bạn từng chọn một điều “có vẻ đúng”, nhưng sau đó lại thấy lòng mình không bình an không?</h2>
+        <div class="options" data-name="q5" data-type="radio">
+          <label class="opt"><input type="radio" name="q5" value="nhieu_lan"><span>Có, nhiều lần</span></label>
+          <label class="opt"><input type="radio" name="q5" value="vai_lan"><span>Có, một vài lần</span></label>
+          <label class="opt"><input type="radio" name="q5" value="khong_nho"><span>Tôi không nhớ rõ</span></label>
+          <label class="opt"><input type="radio" name="q5" value="chua_tung"><span>Chưa từng</span></label>
+          <label class="opt"><input type="radio" name="q5" value="khong_de_y"><span>Tôi thường không để ý cảm giác này</span></label>
+        </div>
+      </div>
+    </section>
+
+    <section class="q-section" data-bg="q6" data-progress="06">
+      <div class="q-inner fade-in">
+        <div class="q-eyebrow">Câu hỏi 06</div>
+        <h2 class="q-title">Khi không biết nên chọn thế nào, bạn thường tìm lời khuyên từ đâu?</h2>
+        <div class="options" data-name="q6" data-type="radio">
+          <label class="opt"><input type="radio" name="q6" value="gia_dinh"><span>Gia đình</span></label>
+          <label class="opt"><input type="radio" name="q6" value="ban_be"><span>Bạn bè</span></label>
+          <label class="opt"><input type="radio" name="q6" value="nguoi_kinh_nghiem"><span>Người có kinh nghiệm</span></label>
+          <label class="opt"><input type="radio" name="q6" value="sach_video"><span>Sách, video, nội dung truyền cảm hứng</span></label>
+          <label class="opt"><input type="radio" name="q6" value="tu_giu_trong_long"><span>Tôi thường tự giữ trong lòng và tự quyết định</span></label>
+        </div>
+      </div>
+    </section>
+
+    <section class="q-section" data-bg="q7" data-progress="07">
+      <div class="q-inner fade-in">
+        <div class="q-eyebrow">Câu hỏi 07</div>
+        <h2 class="q-title">Bạn có tin rằng cuộc đời cần một “tiêu chuẩn đúng” để con người không bị lạc hướng không?</h2>
+        <div class="options" data-name="q7" data-type="radio">
+          <label class="opt"><input type="radio" name="q7" value="rat_dong_y"><span>Có, tôi rất đồng ý</span></label>
+          <label class="opt"><input type="radio" name="q7" value="co_the"><span>Có thể, vì con người dễ bị cảm xúc chi phối</span></label>
+          <label class="opt"><input type="radio" name="q7" value="chua_nghi_sau"><span>Tôi chưa từng nghĩ sâu về điều này</span></label>
+          <label class="opt"><input type="radio" name="q7" value="moi_nguoi_rieng"><span>Tôi nghĩ mỗi người có tiêu chuẩn riêng</span></label>
+          <label class="opt"><input type="radio" name="q7" value="khong_chac"><span>Tôi không chắc</span></label>
+        </div>
+      </div>
+    </section>
+
+    <section class="q-section" data-bg="q8" data-progress="08">
+      <div class="q-inner fade-in">
+        <div class="q-eyebrow">Câu hỏi 08</div>
+        <h2 class="q-title">Nếu có một nguồn khôn ngoan giúp bạn phân biệt điều nên làm và điều nên tránh, bạn có muốn tìm hiểu không?</h2>
+        <div class="options" data-name="q8" data-type="radio">
+          <label class="opt"><input type="radio" name="q8" value="rat_muon"><span>Có, tôi rất muốn</span></label>
+          <label class="opt"><input type="radio" name="q8" value="neu_thuc_te"><span>Có, nếu điều đó thực tế và gần gũi</span></label>
+          <label class="opt"><input type="radio" name="q8" value="to_mo"><span>Tôi tò mò nhưng còn nhiều câu hỏi</span></label>
+          <label class="opt"><input type="radio" name="q8" value="chua_chac"><span>Tôi chưa chắc</span></label>
+          <label class="opt"><input type="radio" name="q8" value="chua_quan_tam"><span>Hiện tại tôi chưa quan tâm</span></label>
+        </div>
+      </div>
+    </section>
+
+    <section class="q-section" data-bg="q9" data-progress="09">
+      <div class="q-inner fade-in">
+        <div class="q-eyebrow">Câu hỏi 09</div>
+        <h2 class="q-title">Nếu có một quyển sách chứa đựng những nguyên tắc giúp con người lựa chọn đúng và sống bình an hơn, bạn muốn tiếp cận theo cách nào?</h2>
+        <div class="options" data-name="q9" data-type="radio">
+          <label class="opt"><input type="radio" name="q9" value="nghe_gioi_thieu"><span>Nghe một phần giới thiệu ngắn trước</span></label>
+          <label class="opt"><input type="radio" name="q9" value="doc_trich_doan"><span>Đọc vài đoạn được chọn lọc và giải thích gần gũi</span></label>
+          <label class="opt"><input type="radio" name="q9" value="dat_cau_hoi"><span>Được đặt câu hỏi và trao đổi cùng người hướng dẫn</span></label>
+          <label class="opt"><input type="radio" name="q9" value="chua_san_sang"><span>Tôi chưa sẵn sàng tìm hiểu sâu</span></label>
+        </div>
+      </div>
+    </section>
+
+    <section class="q-section" data-bg="q10" data-progress="10">
+      <div class="q-inner fade-in">
+        <div class="q-eyebrow">Câu hỏi 10</div>
+        <h2 class="q-title">Nếu có một buổi chia sẻ ngắn về <em>“Làm sao để lựa chọn đúng và có bình an trong lòng”</em>, bạn có muốn tham gia không?</h2>
+        <div class="options" data-name="interested" data-type="radio">
+          <label class="opt"><input type="radio" name="interested" value="muon_tham_gia"><span>Có, tôi muốn tham gia</span></label>
+          <label class="opt"><input type="radio" name="interested" value="neu_phu_hop"><span>Có thể, nếu thời gian phù hợp</span></label>
+          <label class="opt"><input type="radio" name="interested" value="can_thong_tin"><span>Tôi muốn nhận thêm thông tin trước</span></label>
+          <label class="opt"><input type="radio" name="interested" value="doc_tai_lieu"><span>Tôi chỉ muốn đọc tài liệu trước</span></label>
+          <label class="opt"><input type="radio" name="interested" value="chua_san_sang"><span>Hiện tại tôi chưa sẵn sàng</span></label>
+        </div>
+      </div>
+    </section>
+
+    <section class="q-section" data-bg="contact" data-progress="11">
+      <div class="q-inner fade-in">
+        <div class="q-eyebrow">Thông tin liên hệ</div>
+        <h2 class="q-title">Chỉ còn vài thông tin cuối</h2>
+        <p class="q-sub">Để chúng tôi gửi thêm thông tin về buổi chia sẻ và quyển sách mang lại giá trị này.</p>
+        <div class="options two-col" data-name="format" data-type="radio" style="margin-bottom: 22px;">
+          <label class="opt"><input type="radio" name="format" value="online"><span>Online, linh hoạt thời gian</span></label>
+          <label class="opt"><input type="radio" name="format" value="offline"><span>Offline, gặp gỡ trực tiếp</span></label>
+        </div>
+        <div class="input-group">
+          <label class="input-label" for="userName">Bạn tên là</label>
+          <input id="userName" class="field" type="text" autocomplete="name" placeholder="Họ và tên">
+        </div>
+        <div class="input-group">
+          <label class="input-label" for="userContact">SĐT / Email</label>
+          <input id="userContact" class="field" type="text" autocomplete="email" placeholder="0xxx... hoặc email@...">
+        </div>
+        <div class="input-group">
+          <label class="input-label" for="surveyor">Tên người khảo sát *</label>
+          <input id="surveyor" class="field" type="text" placeholder="Người đã giới thiệu khảo sát này" required>
+          <p id="formError" class="form-error" role="alert">Vui lòng nhập tên người khảo sát.</p>
+        </div>
+        <button id="submitBtn" type="submit" class="submit-btn">Gửi khảo sát</button>
+      </div>
+    </section>
+  </form>
+
+  <section id="thanksSection" class="thanks-section" data-bg="reveal">
+    <div class="thanks-card fade-in">
+      <div class="q-eyebrow" style="justify-content:center;">Cảm ơn bạn</div>
+      <h2 class="q-title">Chúng tôi đã nhận được câu trả lời của bạn.</h2>
+      <p class="q-sub" style="margin: 0 auto;">Trong vài ngày tới, chúng tôi sẽ gửi thêm thông tin về buổi chia sẻ và quyển sách chứa đựng những nguyên tắc sống đã đem lại bình an cho rất nhiều người.</p>
+    </div>
+  </section>
+</main>
+
+<script>
+const bgLayers = document.querySelectorAll('.bg-layer');
+const sections = document.querySelectorAll('section[data-bg]');
+const progressNum = document.getElementById('progressNum');
+const form = document.getElementById('survey');
+const submitBtn = document.getElementById('submitBtn');
+const error = document.getElementById('formError');
+
+let currentBg = 'hero';
+function setBackground(bgName) {
+  if (bgName === currentBg) return;
+  currentBg = bgName;
+  bgLayers.forEach(layer => {
+    layer.classList.toggle('active', layer.dataset.bg === bgName);
+  });
+}
+
+function getActiveSectionByScroll() {
+  const scrollMid = window.scrollY + window.innerHeight * 0.45;
+  let best = null;
+  sections.forEach(section => {
+    const top = section.offsetTop;
+    const bottom = top + section.offsetHeight;
+    if (scrollMid >= top && scrollMid < bottom) best = section;
+  });
+  return best || sections[0];
+}
+
+let ticking = false;
+function updateByScroll() {
+  const active = getActiveSectionByScroll();
+  if (!active) return;
+  setBackground(active.dataset.bg);
+  if (active.dataset.progress) progressNum.textContent = String(active.dataset.progress).padStart(2, '0');
+}
+window.addEventListener('scroll', () => {
+  if (!ticking) {
+    requestAnimationFrame(() => {
+      updateByScroll();
+      ticking = false;
+    });
+    ticking = true;
+  }
+}, { passive: true });
+window.addEventListener('resize', updateByScroll);
+updateByScroll();
+
+const fadeObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      fadeObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.fade-in').forEach(el => fadeObserver.observe(el));
+
+function collectGroup(group) {
+  const name = group.dataset.name;
+  const type = group.dataset.type;
+  if (type === 'radio') {
+    const checked = group.querySelector('input[type="radio"]:checked');
+    return [name, checked ? checked.value : null];
+  }
+  return [name, [...group.querySelectorAll('input[type="checkbox"]:checked')].map(input => input.value)];
+}
+
+function collectAnswers() {
+  const answers = {};
+  document.querySelectorAll('[data-name][data-type]').forEach(group => {
+    const [name, value] = collectGroup(group);
+    answers[name] = value;
+  });
+  answers.q10 = answers.interested;
+  return answers;
+}
+
+form.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  const surveyor = document.getElementById('surveyor').value.trim();
+  if (!surveyor) {
+    error.classList.add('visible');
+    document.getElementById('surveyor').focus();
+    return;
+  }
+  error.classList.remove('visible');
+
+  const originalLabel = submitBtn.textContent;
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Đang gửi...';
+
+  const payload = {
+    survey: 'lua_chon_dung',
+    name: document.getElementById('userName').value.trim(),
+    contact: document.getElementById('userContact').value.trim(),
+    surveyor,
+    answers: collectAnswers(),
+  };
+
+  try {
+    const res = await fetch('/api/submit-survey', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+  } catch (err) {
+    console.error('submit error', err);
+    alert('Gửi không thành công. Vui lòng thử lại.');
+    submitBtn.disabled = false;
+    submitBtn.textContent = originalLabel;
+    return;
+  }
+
+  document.getElementById('heroSection').classList.add('hidden');
+  form.classList.add('hidden');
+  const thanks = document.getElementById('thanksSection');
+  thanks.style.display = 'flex';
+  setBackground('reveal');
+  progressNum.textContent = '✓';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  setTimeout(() => thanks.querySelector('.fade-in')?.classList.add('visible'), 300);
+});
+</script>
+</body>
+</html>

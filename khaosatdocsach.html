@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Khảo Sát Thói Quen Đọc Sách — Wonder of World</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Inter', 'sans-serif'],
+          serif: ['EB Garamond', 'serif'],
+          display: ['Cormorant Garamond', 'serif'],
+        },
+        colors: {
+          paper: '#f0e6d2',
+          'paper-warm': '#e8d9b5',
+          'cream-deep': '#d4c5a0',
+          leather: '#5c3a1f',
+          'leather-dark': '#3a2515',
+          ink: '#2a1f15',
+          'ink-soft': '#4a3a2a',
+          gold: '#b8860b',
+          'gold-light': '#d4a755',
+          'gold-pale': '#e8c87a',
+          'dark-bg': '#1a120a',
+          'dark-paper': '#2a1f12',
+          'dark-text': '#f0e6d2',
+        }
+      }
+    }
+  }
+</script>
+
+<style type="text/tailwindcss">
+  @layer base {
+    body {
+      @apply font-serif bg-paper text-ink overflow-x-hidden leading-relaxed text-[20px] antialiased;
+    }
+  }
+
+  @layer components {
+    .bg-noise::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 4;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='3'/><feColorMatrix values='0 0 0 0 0.35  0 0 0 0 0.25  0 0 0 0 0.13  0 0 0 0.18 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+      mix-blend-mode: multiply;
+      @apply opacity-35;
+    }
+
+    .bg-vignette::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 3;
+      background: radial-gradient(ellipse at center, transparent 50%, rgba(58,37,21,.18) 100%);
+    }
+
+    .bg-overlay-dark::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(26, 18, 10, 0.93) 0%, rgba(26, 18, 10, 0.8) 50%, rgba(26, 18, 10, 0.7) 100%);
+      z-index: 1;
+    }
+
+    .bg-overlay-light::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(240, 230, 210, 0.72);
+      z-index: 1;
+    }
+
+    .bg-grad-q15.bg-overlay-light::before {
+      background: rgba(240, 230, 210, 0.55);
+    }
+
+    /* Option selection effect — mirrors lehoivanhoa */
+    label.cursor-pointer {
+      transition: background-color .35s ease, border-color .35s ease,
+                  transform .35s cubic-bezier(.4,0,.2,1), box-shadow .35s ease;
+    }
+    /* Light variant: leather accent on white paper (Q1, Q10) */
+    label.cursor-pointer:has(input[class*="checked:bg-leather"]:checked) {
+      background-color: rgba(92, 58, 31, 0.12) !important;
+      border-color: rgba(92, 58, 31, 0.65) !important;
+      box-shadow: 0 8px 24px rgba(58, 37, 21, .18), inset 0 0 0 1px rgba(92, 58, 31, .1);
+    }
+    label.cursor-pointer:has(input[class*="checked:bg-leather"]:checked) span {
+      color: #3a2515;
+    }
+    label.cursor-pointer input[class*="checked:bg-leather"]:checked {
+      background-color: #5c3a1f !important;
+      border-color: #5c3a1f !important;
+      box-shadow: 0 0 0 4px rgba(92, 58, 31, .18);
+    }
+    label.cursor-pointer input[class*="checked:bg-leather"][type="radio"]:checked::after {
+      content: '';
+      position: absolute;
+      inset: 3px;
+      background: #f0e6d2;
+      border-radius: 50%;
+    }
+    label.cursor-pointer input[class*="checked:bg-leather"][type="checkbox"]:checked::after {
+      content: '✓';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      color: #f0e6d2;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1;
+    }
+    /* Dark variant: gold-light accent on dark paper */
+    label.cursor-pointer:has(input[class*="checked:bg-gold-light"]:checked) {
+      background-color: rgba(212, 167, 85, 0.18) !important;
+      border-color: rgba(212, 167, 85, 0.7) !important;
+      box-shadow: 0 8px 28px rgba(0, 0, 0, .35), inset 0 0 0 1px rgba(212, 167, 85, .18);
+    }
+    label.cursor-pointer:has(input[class*="checked:bg-gold-light"]:checked) span {
+      color: #f0e0b8;
+    }
+    label.cursor-pointer input[class*="checked:bg-gold-light"]:checked {
+      background-color: #d4a755 !important;
+      border-color: #d4a755 !important;
+      box-shadow: 0 0 0 4px rgba(212, 167, 85, .25);
+    }
+    label.cursor-pointer input[class*="checked:bg-gold-light"][type="radio"]:checked::after {
+      content: '';
+      position: absolute;
+      inset: 3px;
+      background: #1a120a;
+      border-radius: 50%;
+    }
+    label.cursor-pointer input[class*="checked:bg-gold-light"][type="checkbox"]:checked::after {
+      content: '✓';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      color: #1a120a;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1;
+    }
+  }
+
+  /* Specific background styles */
+  .bg-grad-hero    { background-image: url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&q=80&w=2000'); background-size: cover; background-position: center; }
+  .bg-grad-quote   { background-image: url('https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&q=80&w=2000'); background-size: cover; background-position: center; }
+  .bg-grad-paper   { background-image: url('https://images.unsplash.com/photo-1586075010633-2442dc3d63b2?auto=format&fit=crop&q=80&w=2000'); background-size: cover; background-position: center; }
+  .bg-grad-paper-2 { background-image: url('https://images.unsplash.com/photo-1614332287897-cdc485fa562d?auto=format&fit=crop&q=80&w=2000'); background-size: cover; background-position: center; }
+  .bg-grad-paper-3 { background-image: url('https://images.unsplash.com/photo-1544027993-37dbfe43562a?auto=format&fit=crop&q=80&w=2000'); background-size: cover; background-position: center; }
+  .bg-grad-leather { background-image: url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&q=80&w=2000'); background-size: cover; background-position: center; }
+  .bg-grad-reveal  { background-image: url('https://i.pinimg.com/736x/8b/0f/09/8b0f09abe132aa03ca11967ee83cb82d.jpg'); background-size: cover; background-position: center; }
+  .bg-grad-q12     { background-image: url('https://as2.ftcdn.net/jpg/04/29/93/03/1000_F_429930354_lA72xmxNSzMCiZSoXlNEDrkVfEHpZ3wB.jpg'); background-size: cover; background-position: center; }
+  .bg-grad-q13     { background-image: url('https://i.pinimg.com/736x/8b/9b/10/8b9b10edfe90c146d598b560cda5a513.jpg'); background-size: cover; background-position: center; }
+  .bg-grad-q14     { background-image: url('https://i.pinimg.com/736x/82/10/b3/8210b36e88924f81e535829da218541e.jpg'); background-size: cover; background-position: center; }
+  .bg-grad-q15     { background-image: url('https://i.pinimg.com/736x/96/b2/29/96b2291f5cd440868dc24878c9345f1d.jpg'); background-size: cover; background-position: center; background-color: #f0e6d2; }
+  .bg-grad-q2      { background-image: url('https://i.pinimg.com/1200x/f5/17/e2/f517e27b31bcef2c6b6ef4d1db7864e5.jpg'); background-size: cover; background-position: center; }
+  .bg-grad-q3      { background-image: url('https://i.pinimg.com/1200x/79/46/0b/79460b39cd49c85bc3c81f7df14f02d4.jpg'); background-size: cover; background-position: center; }
+  .bg-grad-q4      { background-image: url('https://i.pinimg.com/736x/0b/38/62/0b386255fccdae504bbf921a32c79425.jpg'); background-size: cover; background-position: center; }
+  .bg-grad-q5      { background-image: url('https://i.pinimg.com/1200x/77/d0/fa/77d0fa7f0a50b6ab0a1675e07e92e862.jpg'); background-size: cover; background-position: center; }
+  .bg-grad-q6      { background-image: url('https://i.pinimg.com/1200x/9b/5c/1f/9b5c1f14d9df1f21cad58b39bbbb666f.jpg'); background-size: cover; background-position: center; }
+  .bg-grad-q7      { background-image: url('https://i.pinimg.com/1200x/d9/6a/a7/d96aa77025aadd0f2897ef354e89a3f0.jpg'); background-size: cover; background-position: center; }
+  .bg-grad-q8      { background-image: url('https://i.pinimg.com/736x/97/f3/2d/97f32dd3dec3221cca5a193bc352c8f3.jpg'); background-size: cover; background-position: center; }
+  .bg-grad-q9      { background-image: url('https://i.pinimg.com/1200x/1b/3e/04/1b3e04bfb8a658f21304dde30cf5de7f.jpg'); background-size: cover; background-position: center; }
+
+  @keyframes bobble {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+  }
+
+  .scroll-hint { animation: bobble 2.5s ease-in-out infinite; }
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s ease, transform 1s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .bg-layer {
+    opacity: 0;
+    transition: opacity 1.4s cubic-bezier(.4,0,.2,1);
+  }
+  .bg-layer.active {
+    opacity: 1;
+  }
+</style>
+</head>
+<body>
+
+<!-- BACKGROUND STAGE -->
+<div class="fixed inset-0 z-0 bg-noise bg-vignette overflow-hidden" id="bgStage">
+  <div class="bg-layer bg-grad-hero bg-overlay-dark absolute inset-0 active" data-bg="hero"></div>
+  <div class="bg-layer bg-grad-quote bg-overlay-dark absolute inset-0" data-bg="quote"></div>
+  <div class="bg-layer bg-grad-paper bg-overlay-light absolute inset-0" data-bg="paper"></div>
+  <div class="bg-layer bg-grad-paper-2 bg-overlay-light absolute inset-0" data-bg="paper-2"></div>
+  <div class="bg-layer bg-grad-paper-3 bg-overlay-light absolute inset-0" data-bg="paper-3"></div>
+  <div class="bg-layer bg-grad-leather bg-overlay-dark absolute inset-0" data-bg="leather"></div>
+  <div class="bg-layer bg-grad-reveal bg-overlay-dark absolute inset-0" data-bg="reveal"></div>
+  <div class="bg-layer bg-grad-q12 bg-overlay-dark absolute inset-0" data-bg="q12"></div>
+  <div class="bg-layer bg-grad-q13 bg-overlay-dark absolute inset-0" data-bg="q13"></div>
+  <div class="bg-layer bg-grad-q14 bg-overlay-dark absolute inset-0" data-bg="q14"></div>
+  <div class="bg-layer bg-grad-q15 bg-overlay-light absolute inset-0" data-bg="q15"></div>
+  <div class="bg-layer bg-grad-q2 bg-overlay-dark absolute inset-0" data-bg="q2"></div>
+  <div class="bg-layer bg-grad-q3 bg-overlay-dark absolute inset-0" data-bg="q3"></div>
+  <div class="bg-layer bg-grad-q4 bg-overlay-dark absolute inset-0" data-bg="q4"></div>
+  <div class="bg-layer bg-grad-q5 bg-overlay-dark absolute inset-0" data-bg="q5"></div>
+  <div class="bg-layer bg-grad-q6 bg-overlay-dark absolute inset-0" data-bg="q6"></div>
+  <div class="bg-layer bg-grad-q7 bg-overlay-dark absolute inset-0" data-bg="q7"></div>
+  <div class="bg-layer bg-grad-q8 bg-overlay-dark absolute inset-0" data-bg="q8"></div>
+  <div class="bg-layer bg-grad-q9 bg-overlay-dark absolute inset-0" data-bg="q9"></div>
+</div>
+
+<!-- HEADER -->
+<header id="topBar" class="fixed top-0 inset-x-0 z-50 px-6 md:px-12 py-6 flex justify-between items-center pointer-events-none transition-colors duration-800 text-dark-text">
+  <div class="font-display font-medium text-base tracking-[0.2em] uppercase">
+    Wonder <span class="italic text-gold px-1.5">·</span> of <span class="italic text-gold px-1.5">·</span> World
+  </div>
+  <div id="progressCont" class="font-sans text-[11px] tracking-[0.15em] uppercase px-4 py-2 border border-gold-light/30 bg-dark-bg/40 rounded-full backdrop-blur-md transition-all duration-800">
+    <b id="progressNum" class="text-gold-light font-semibold">01</b> / 17
+  </div>
+</header>
+
+<main id="mainContent" class="relative z-10 w-full">
+
+  <!-- HERO -->
+  <section class="min-h-screen px-6 md:px-12 flex items-center relative" data-bg="hero">
+    <div class="max-w-3xl md:ml-[8%]">
+      <div class="font-sans text-xs tracking-[0.25em] text-gold-light uppercase mb-6 font-medium">❦ Khảo sát · Wonder of World</div>
+      <h1 class="font-display font-normal text-5xl md:text-8xl text-dark-text leading-tight mb-8 tracking-tighter">
+        Liệu bạn có phải là <em class="italic text-gold-light">người yêu quý sách</em> không?
+      </h1>
+      <p class="text-lg md:text-xl leading-loose text-dark-text/80 mb-10 max-w-xl italic">
+        Một hành trình ngắn để cùng nhìn lại thói quen đọc của bạn — và khám phá một quyển sách đặc biệt đã âm thầm thay đổi vận mệnh của vô số người trên khắp thế giới.
+      </p>
+      <div class="flex items-center gap-3 text-dark-text/80 text-sm tracking-widest font-sans before:content-['❦'] before:text-gold-light">
+        15 câu hỏi · 4 phút · Bí mật ở câu cuối
+      </div>
+    </div>
+    <div class="scroll-hint absolute bottom-9 left-1/2 -translate-x-1/2 text-dark-text/60 font-sans text-[11px] tracking-[0.3em] uppercase flex flex-col items-center gap-3">
+      <span>Lật trang</span>
+      <div class="w-px h-10 bg-gradient-to-b from-gold-light to-transparent"></div>
+    </div>
+  </section>
+
+  <!-- QUOTE -->
+  <section class="min-h-screen px-6 md:px-12 flex items-center justify-center text-center" data-bg="quote" data-progress="01">
+    <div class="max-w-4xl fade-in">
+      <div class="font-display text-9xl text-gold-light leading-none mb-6 opacity-60">"</div>
+      <p class="font-display italic text-3xl md:text-5xl text-dark-text leading-snug mb-8 tracking-tight">
+        Việc đọc rất quan trọng. <strong class="font-medium text-gold-pale not-italic">Nếu bạn biết đọc, cả thế giới sẽ mở ra trong bạn.</strong>
+      </p>
+      <div class="font-sans text-[13px] tracking-[0.3em] uppercase text-gold-light before:content-['—_']">Barack Obama</div>
+    </div>
+  </section>
+
+  <!-- Q1 -->
+  <section class="min-h-screen px-6 md:px-12 py-32 flex items-center relative" data-bg="paper" data-progress="02">
+    <div class="max-w-2xl w-full md:ml-[8%] fade-in">
+      <div class="font-sans text-[13px] tracking-[0.35em] uppercase mb-4 flex items-center gap-4 font-medium text-leather before:h-px before:w-7 before:bg-leather">Câu hỏi 01</div>
+      <h2 class="font-display font-medium text-4xl md:text-5xl leading-snug mb-6 text-ink">Bạn có thói quen đọc sách không?</h2>
+      <div class="flex flex-col gap-2">
+        <label class="flex items-center gap-4 p-3.5 rounded-sm cursor-pointer select-none border border-leather/20 bg-white/50 hover:bg-white/85 hover:translate-x-1.5 transition-all text-ink">
+          <input type="radio" name="q1" value="Có" class="appearance-none w-4 h-4 border-1.5 border-leather/40 bg-white/60 checked:bg-leather rounded-full relative">
+          <span class="text-xl">Có</span>
+        </label>
+        <label class="flex items-center gap-4 p-3.5 rounded-sm cursor-pointer select-none border border-leather/20 bg-white/50 hover:bg-white/85 hover:translate-x-1.5 transition-all text-ink">
+          <input type="radio" name="q1" value="Thỉnh thoảng" class="appearance-none w-4 h-4 border-1.5 border-leather/40 bg-white/60 checked:bg-leather rounded-full relative">
+          <span class="text-xl">Thỉnh thoảng</span>
+        </label>
+        <label class="flex items-center gap-4 p-3.5 rounded-sm cursor-pointer select-none border border-leather/20 bg-white/50 hover:bg-white/85 hover:translate-x-1.5 transition-all text-ink">
+          <input type="radio" name="q1" value="Không" class="appearance-none w-4 h-4 border-1.5 border-leather/40 bg-white/60 checked:bg-leather rounded-full relative">
+          <span class="text-xl">Không</span>
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <!-- Q2 -->
+  <section class="min-h-screen px-6 md:px-12 py-32 flex items-center relative" data-bg="q2" data-progress="03">
+    <div class="max-w-2xl w-full md:ml-[8%] fade-in">
+      <div class="font-sans text-[13px] tracking-[0.35em] uppercase mb-4 flex items-center gap-4 font-medium text-gold-light before:h-px before:w-7 before:bg-gold-light">Câu hỏi 02</div>
+      <h2 class="font-display font-medium text-4xl md:text-5xl leading-snug mb-6 text-dark-text">Thể loại sách bạn lựa chọn để đọc là gì?</h2>
+      <p class="italic text-lg mb-8 text-dark-text/75">Có thể chọn nhiều đáp án.</p>
+      <div class="flex flex-col gap-2">
+        <label class="flex items-center gap-4 p-3.5 rounded-sm cursor-pointer select-none border border-gold-light/20 bg-dark-paper/50 hover:bg-dark-paper/70 hover:translate-x-1.5 transition-all text-dark-text">
+          <input type="checkbox" value="Khoa học" class="appearance-none w-4 h-4 border-1.5 border-gold-light/40 bg-dark-paper/40 checked:bg-gold-light rounded-sm relative">
+          <span class="text-xl">Khoa học</span>
+        </label>
+        <label class="flex items-center gap-4 p-3.5 rounded-sm cursor-pointer select-none border border-gold-light/20 bg-dark-paper/50 hover:bg-dark-paper/70 hover:translate-x-1.5 transition-all text-dark-text">
+          <input type="checkbox" value="Kĩ năng đời sống" class="appearance-none w-4 h-4 border-1.5 border-gold-light/40 bg-dark-paper/40 checked:bg-gold-light rounded-sm relative">
+          <span class="text-xl">Kĩ năng đời sống</span>
+        </label>
+        <label class="flex items-center gap-4 p-3.5 rounded-sm cursor-pointer select-none border border-gold-light/20 bg-dark-paper/50 hover:bg-dark-paper/70 hover:translate-x-1.5 transition-all text-dark-text">
+          <input type="checkbox" value="Kĩ năng công việc" class="appearance-none w-4 h-4 border-1.5 border-gold-light/40 bg-dark-paper/40 checked:bg-gold-light rounded-sm relative">
+          <span class="text-xl">Kĩ năng công việc</span>
+        </label>
+        <label class="flex items-center gap-4 p-3.5 rounded-sm cursor-pointer select-none border border-gold-light/20 bg-dark-paper/50 hover:bg-dark-paper/70 hover:translate-x-1.5 transition-all text-dark-text">
+          <input type="checkbox" value="Thương mại, kinh doanh" class="appearance-none w-4 h-4 border-1.5 border-gold-light/40 bg-dark-paper/40 checked:bg-gold-light rounded-sm relative">
+          <span class="text-xl">Thương mại, kinh doanh</span>
+        </label>
+        <label class="flex items-center gap-4 p-3.5 rounded-sm cursor-pointer select-none border border-gold-light/20 bg-dark-paper/50 hover:bg-dark-paper/70 hover:translate-x-1.5 transition-all text-dark-text">
+          <input type="checkbox" value="Tiểu thuyết, truyện tranh" class="appearance-none w-4 h-4 border-1.5 border-gold-light/40 bg-dark-paper/40 checked:bg-gold-light rounded-sm relative">
+          <span class="text-xl">Tiểu thuyết, truyện tranh</span>
+        </label>
+        <label class="flex items-center gap-4 p-3.5 rounded-sm cursor-pointer select-none border border-gold-light/20 bg-dark-paper/50 hover:bg-dark-paper/70 hover:translate-x-1.5 transition-all text-dark-text">
+          <input type="checkbox" value="Tín ngưỡng, tâm linh" class="appearance-none w-4 h-4 border-1.5 border-gold-light/40 bg-dark-paper/40 checked:bg-gold-light rounded-sm relative">
+          <span class="text-xl">Tín ngưỡng tôn giáo, tâm linh</span>
+        </label>
+        <div class="p-3 bg-dark-paper/50 border border-gold-light/20 rounded flex items-center gap-3">
+          <input type="checkbox" id="q2_other_check" class="appearance-none w-4 h-4 border-1.5 border-gold-light/40 bg-dark-paper/40 checked:bg-gold-light rounded-sm relative">
+          <span class="italic text-dark-text/70">Khác:</span>
+          <input type="text" id="q2_other_val" class="flex-1 bg-transparent border-b border-gold-light/30 focus:border-gold-light outline-none italic text-dark-text placeholder:text-dark-text/40" placeholder="Thể loại khác...">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Q3 -->
+  <section class="min-h-screen px-6 md:px-12 py-32 flex items-center relative" data-bg="q3" data-progress="04">
+    <div class="max-w-2xl w-full md:ml-[8%] fade-in">
+      <div class="font-sans text-[13px] tracking-[0.35em] uppercase mb-4 flex items-center gap-4 font-medium text-gold-light before:h-px before:w-7 before:bg-gold-light">Câu hỏi 03</div>
+      <h2 class="font-display font-medium text-4xl md:text-5xl leading-snug mb-6 text-dark-text">Một ngày bạn dành bao nhiêu thời gian cho việc đọc sách?</h2>
+      <div class="flex flex-col gap-2">
+        <label class="flex items-center gap-4 p-3.5 rounded-sm cursor-pointer select-none border border-gold-light/20 bg-dark-paper/50 hover:bg-dark-paper/70 transition-all text-dark-text">
+          <input type="radio" name="q3" value="Dưới 1 tiếng" class="appearance-none w-4 h-4 border-1.5 border-gold-light/40 bg-dark-paper/40 checked:bg-gold-light rounded-full relative">
+          <span class="text-xl">Dưới 1 tiếng</span>
+        </label>
+        <label class="flex items-center gap-4 p-3.5 rounded-sm cursor-pointer select-none border border-gold-light/20 bg-dark-paper/50 hover:bg-dark-paper/70 transition-all text-dark-text">
+          <input type="radio" name="q3" value="1 đến 2 tiếng" class="appearance-none w-4 h-4 border-1.5 border-gold-light/40 bg-dark-paper/40 checked:bg-gold-light rounded-full relative">
+          <span class="text-xl">1 đến 2 tiếng</span>
+        </label>
+        <label class="flex items-center gap-4 p-3.5 rounded-sm cursor-pointer select-none border border-gold-light/20 bg-dark-paper/50 hover:bg-dark-paper/70 transition-all text-dark-text">
+          <input type="radio" name="q3" value="2 đến 3 tiếng" class="appearance-none w-4 h-4 border-1.5 border-gold-light/40 bg-dark-paper/40 checked:bg-gold-light rounded-full relative">
+          <span class="text-xl">2 đến 3 tiếng</span>
+        </label>
+        <label class="flex items-center gap-4 p-3.5 rounded-sm cursor-pointer select-none border border-gold-light/20 bg-dark-paper/50 hover:bg-dark-paper/70 transition-all text-dark-text">
+          <input type="radio" name="q3" value="Trên 3 tiếng" class="appearance-none w-4 h-4 border-1.5 border-gold-light/40 bg-dark-paper/40 checked:bg-gold-light rounded-full relative">
+          <span class="text-xl">Trên 3 tiếng</span>
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <!-- Q4 -->
+  <section class="min-h-screen px-6 md:px-12 py-32 flex items-center relative" data-bg="q4" data-progress="05">
+    <div class="max-w-2xl w-full md:ml-[8%] fade-in">
+      <div class="font-sans text-[13px] tracking-[0.35em] uppercase mb-4 flex items-center gap-4 font-medium text-gold-light before:h-px before:w-7 before:bg-gold-light">Câu hỏi 04</div>
+      <h2 class="font-display font-medium text-4xl md:text-5xl leading-snug mb-6 text-dark-text">Bạn có thường đọc sách trên mạng không?</h2>
+      <div class="flex flex-col gap-2">
+        <label class="flex items-center gap-4 p-3.5 rounded-sm cursor-pointer select-none border border-gold-light/20 bg-dark-paper/50 hover:bg-dark-paper/70 transition-all text-dark-text">
+          <input type="radio" name="q4" value="Có" class="appearance-none w-4 h-4 border-1.5 border-gold-light/40 bg-dark-paper/40 checked:bg-gold-light rounded-full relative">
+          <span class="text-xl">Có</span>
+        </label>
+        <label class="flex items-center gap-4 p-3.5 rounded-sm cursor-pointer select-none border border-gold-light/20 bg-dark-paper/50 hover:bg-dark-paper/70 transition-all text-dark-text">
+          <input type="radio" name="q4" value="Không" class="appearance-none w-4 h-4 border-1.5 border-gold-light/40 bg-dark-paper/40 checked:bg-gold-light rounded-full relative">
+          <span class="text-xl">Không</span>
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <!-- Q5 -->
+  <section class="min-h-screen px-6 md:px-12 py-32 flex items-center relative" data-bg="q5" data-progress="06">
+    <div class="max-w-2xl w-full md:ml-[8%] fade-in">
+      <div class="font-sans text-[13px] tracking-[0.35em] uppercase mb-4 flex items-center gap-4 font-medium text-gold-light before:h-px before:w-7 before:bg-gold-light">Câu hỏi 05</div>
+      <h2 class="font-display font-medium text-4xl md:text-5xl leading-snug mb-6 text-dark-text">Bạn đã từng tham gia webinar về sách chưa?</h2>
+      <div class="flex flex-col gap-2">
+        <label class="flex items-center gap-4 p-3.5 rounded-sm cursor-pointer select-none border border-gold-light/20 bg-dark-paper/50 hover:bg-dark-paper/70 transition-all text-dark-text">
+          <input type="radio" name="q5" value="Đã từng" class="appearance-none w-4 h-4 border-1.5 border-gold-light/40 bg-dark-paper/40 checked:bg-gold-light rounded-full relative">
+          <span class="text-xl">Đã từng</span>
+        </label>
+        <label class="flex items-center gap-4 p-3.5 rounded-sm cursor-pointer select-none border border-gold-light/20 bg-dark-paper/50 hover:bg-dark-paper/70 transition-all text-dark-text">
+          <input type="radio" name="q5" value="Chưa" class="appearance-none w-4 h-4 border-1.5 border-gold-light/40 bg-dark-paper/40 checked:bg-gold-light rounded-full relative">
+          <span class="text-xl">Chưa</span>
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <!-- Q6 -->
+  <section class="min-h-screen px-6 md:px-12 py-32 flex items-center relative" data-bg="q6" data-progress="07">
+    <div class="max-w-2xl w-full md:ml-[8%] fade-in">
+      <div class="font-sans text-[13px] tracking-[0.35em] uppercase mb-4 flex items-center gap-4 font-medium text-gold-light before:h-px before:w-7 before:bg-gold-light">Câu hỏi 06</div>
+      <h2 class="font-display font-medium text-4xl md:text-5xl leading-snug mb-6 text-dark-text">Theo bạn, điều gì là quan trọng khi chọn một cuốn sách?</h2>
+      <p class="italic text-lg mb-8 text-dark-text/75">Có thể chọn nhiều đáp án.</p>
+      <div class="flex flex-col gap-2">
+        <label class="flex items-center gap-4 p-3.5 rounded-sm cursor-pointer select-none border border-gold-light/20 bg-dark-paper/50 hover:bg-dark-paper/70 transition-all text-dark-text">
+          <input type="checkbox" value="Tác giả" class="appearance-none w-4 h-4 border-1.5 border-gold-light/40 bg-dark-paper/40 checked:bg-gold-light rounded-sm relative">
+          <span class="text-xl">Tác giả</span>
+        </label>
+        <label class="flex items-center gap-4 p-3.5 rounded-sm cursor-pointer select-none border border-gold-light/20 bg-dark-paper/50 hover:bg-dark-paper/70 transition-all text-dark-text">
+          <input type="checkbox" value="Dịch giả" class="appearance-none w-4 h-4 border-1.5 border-gold-light/40 bg-dark-paper/40 checked:bg-gold-light rounded-sm relative">
+          <span class="text-xl">Dịch giả</span>
+        </label>
+        <label class="flex items-center gap-4 p-3.5 rounded-sm cursor-pointer select-none border border-gold-light/20 bg-dark-paper/50 hover:bg-dark-paper/70 transition-all text-dark-text">
+          <input type="checkbox" value="Nhà xuất bản" class="appearance-none w-4 h-4 border-1.5 border-gold-light/40 bg-dark-paper/40 checked:bg-gold-light rounded-sm relative">
+          <span class="text-xl">Nhà xuất bản</span>
+        </label>
+        <label class="flex items-center gap-4 p-3.5 rounded-sm cursor-pointer select-none border border-gold-light/20 bg-dark-paper/50 hover:bg-dark-paper/70 transition-all text-dark-text">
+          <input type="checkbox" value="Nội dung" class="appearance-none w-4 h-4 border-1.5 border-gold-light/40 bg-dark-paper/40 checked:bg-gold-light rounded-sm relative">
+          <span class="text-xl">Nội dung</span>
+        </label>
+        <label class="flex items-center gap-4 p-3.5 rounded-sm cursor-pointer select-none border border-gold-light/20 bg-dark-paper/50 hover:bg-dark-paper/70 transition-all text-dark-text">
+          <input type="checkbox" value="Giá cả" class="appearance-none w-4 h-4 border-1.5 border-gold-light/40 bg-dark-paper/40 checked:bg-gold-light rounded-sm relative">
+          <span class="text-xl">Giá cả</span>
+        </label>
+        <label class="flex items-center gap-4 p-3.5 rounded-sm cursor-pointer select-none border border-gold-light/20 bg-dark-paper/50 hover:bg-dark-paper/70 transition-all text-dark-text">
+          <input type="checkbox" value="Thể loại yêu thích" class="appearance-none w-4 h-4 border-1.5 border-gold-light/40 bg-dark-paper/40 checked:bg-gold-light rounded-sm relative">
+          <span class="text-xl">Thể loại yêu thích</span>
+        </label>
+        <label class="flex items-center gap-4 p-3.5 rounded-sm cursor-pointer select-none border border-gold-light/20 bg-dark-paper/50 hover:bg-dark-paper/70 transition-all text-dark-text">
+          <input type="checkbox" value="Sách được giới thiệu" class="appearance-none w-4 h-4 border-1.5 border-gold-light/40 bg-dark-paper/40 checked:bg-gold-light rounded-sm relative">
+          <span class="text-xl">Sách được giới thiệu, quảng cáo</span>
+        </label>
+        <label class="flex items-center gap-4 p-3.5 rounded-sm cursor-pointer select-none border border-gold-light/20 bg-dark-paper/50 hover:bg-dark-paper/70 transition-all text-dark-text">
+          <input type="checkbox" value="Sách đoạt giải thưởng" class="appearance-none w-4 h-4 border-1.5 border-gold-light/40 bg-dark-paper/40 checked:bg-gold-light rounded-sm relative">
+          <span class="text-xl">Sách đoạt các giải thưởng uy tín</span>
+        </label>
+        <label class="flex items-center gap-4 p-3.5 rounded-sm cursor-pointer select-none border border-gold-light/20 bg-dark-paper/50 hover:bg-dark-paper/70 transition-all text-dark-text">
+          <input type="checkbox" value="Số lượng phát hành lớn" class="appearance-none w-4 h-4 border-1.5 border-gold-light/40 bg-dark-paper/40 checked:bg-gold-light rounded-sm relative">
+          <span class="text-xl">Sách có số lượng phát hành lớn</span>
+        </label>
+        <label class="flex items-center gap-4 p-3.5 rounded-sm cursor-pointer select-none border border-gold-light/20 bg-dark-paper/50 hover:bg-dark-paper/70 transition-all text-dark-text">
+          <input type="checkbox" value="Tựa đề / bìa bắt mắt" class="appearance-none w-4 h-4 border-1.5 border-gold-light/40 bg-dark-paper/40 checked:bg-gold-light rounded-sm relative">
+          <span class="text-xl">Sách có tựa đề hoặc trang bìa bắt mắt</span>
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <!-- Q7 -->
+  <section class="min-h-screen px-6 md:px-12 py-32 flex items-center relative" data-bg="q7" data-progress="08">
+    <div class="max-w-2xl w-full md:ml-[8%] fade-in">
+      <div class="font-sans text-[13px] tracking-[0.35em] uppercase mb-4 flex items-center gap-4 font-medium text-gold-light before:h-px before:w-7 before:bg-gold-light">Câu hỏi 07</div>
+      <h2 class="font-display font-medium text-4xl md:text-5xl leading-snug mb-6 text-dark-text">Việc đọc sách có giúp ích cho cuộc sống của bạn không?</h2>
+      <div class="flex flex-col gap-2">
+        <label class="flex items-center gap-4 p-3.5 rounded-sm cursor-pointer select-none border border-gold-light/20 bg-dark-paper/50 hover:bg-dark-paper/70 transition-all text-dark-text">
+          <input type="radio" name="q7" value="Ít" class="appearance-none w-4 h-4 border-1.5 border-gold-light/40 bg-dark-paper/40 checked:bg-gold-light rounded-full relative">
+          <span class="text-xl">Ít</span>
+        </label>
+        <label class="flex items-center gap-4 p-3.5 rounded-sm cursor-pointer select-none border border-gold-light/20 bg-dark-paper/50 hover:bg-dark-paper/70 transition-all text-dark-text">
+          <input type="radio" name="q7" value="Vừa" class="appearance-none w-4 h-4 border-1.5 border-gold-light/40 bg-dark-paper/40 checked:bg-gold-light rounded-full relative">
+          <span class="text-xl">Vừa</span>
+        </label>
+        <label class="flex items-center gap-4 p-3.5 rounded-sm cursor-pointer select-none border border-gold-light/20 bg-dark-paper/50 hover:bg-dark-paper/70 transition-all text-dark-text">
+          <input type="radio" name="q7" value="Nhiều" class="appearance-none w-4 h-4 border-1.5 border-gold-light/40 bg-dark-paper/40 checked:bg-gold-light rounded-full relative">
+          <span class="text-xl">Nhiều</span>
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <!-- Q8 -->
+  <section class="min-h-screen px-6 md:px-12 py-32 flex items-center relative" data-bg="q8" data-progress="09">
+    <div class="max-w-2xl w-full md:ml-[8%] fade-in">
+      <div class="font-sans text-[13px] tracking-[0.35em] uppercase mb-4 flex items-center gap-4 font-medium text-gold-light before:h-px before:w-7 before:bg-gold-light">Câu hỏi 08</div>
+      <h2 class="font-display font-medium text-4xl md:text-5xl leading-snug mb-6 text-dark-text">Khi đọc sách bạn thường?</h2>
+      <div class="flex flex-col gap-2">
+        <label class="flex items-center gap-4 p-3.5 rounded-sm cursor-pointer select-none border border-gold-light/20 bg-dark-paper/50 hover:bg-dark-paper/70 transition-all text-dark-text">
+          <input type="radio" name="q8" value="Chú tâm" class="appearance-none w-4 h-4 border-1.5 border-gold-light/40 bg-dark-paper/40 checked:bg-gold-light rounded-full relative">
+          <span class="text-xl">Chỉ chú tâm vào đọc sách</span>
+        </label>
+        <label class="flex items-center gap-4 p-3.5 rounded-sm cursor-pointer select-none border border-gold-light/20 bg-dark-paper/50 hover:bg-dark-paper/70 transition-all text-dark-text">
+          <input type="radio" name="q8" value="Lướt qua" class="appearance-none w-4 h-4 border-1.5 border-gold-light/40 bg-dark-paper/40 checked:bg-gold-light rounded-full relative">
+          <span class="text-xl">Đọc lướt qua</span>
+        </label>
+        <label class="flex items-center gap-4 p-3.5 rounded-sm cursor-pointer select-none border border-gold-light/20 bg-dark-paper/50 hover:bg-dark-paper/70 transition-all text-dark-text">
+          <input type="radio" name="q8" value="Suy ngẫm" class="appearance-none w-4 h-4 border-1.5 border-gold-light/40 bg-dark-paper/40 checked:bg-gold-light rounded-full relative">
+          <span class="text-xl">Đọc và suy ngẫm</span>
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <!-- Q9 -->
+  <section class="min-h-screen px-6 md:px-12 py-32 flex items-center relative" data-bg="q9" data-progress="10">
+    <div class="max-w-[680px] w-full md:ml-[8%] fade-in">
+      <div class="font-sans text-[13px] tracking-[0.35em] uppercase mb-4 flex items-center gap-4 font-medium text-gold-light before:h-px before:w-7 before:bg-gold-light">Câu hỏi 09</div>
+      <h2 class="font-display font-medium text-4xl md:text-5xl leading-snug mb-6 text-dark-text">Theo bạn, một quyển sách chất lượng là một quyển sách như thế nào?</h2>
+      <p class="italic text-lg mb-8 text-dark-text/75">Hãy chia sẻ suy nghĩ của bạn.</p>
+      <textarea id="q9" class="w-full bg-dark-paper/40 border border-gold-light/20 rounded-sm p-5 text-dark-text text-lg italic leading-relaxed outline-none focus:border-gold-light focus:bg-dark-paper/60 transition-all min-h-[120px]" placeholder="Với mình, một quyển sách chất lượng là..."></textarea>
+    </div>
+  </section>
+
+  <!-- Q10 -->
+  <section class="min-h-screen px-6 md:px-12 py-32 flex items-center relative" data-bg="paper" data-progress="11">
+    <div class="max-w-2xl w-full md:ml-[8%] fade-in">
+      <div class="font-sans text-[13px] tracking-[0.35em] uppercase mb-4 flex items-center gap-4 font-medium text-leather before:h-px before:w-7 before:bg-leather">Câu hỏi 10</div>
+      <h2 class="font-display font-medium text-4xl md:text-5xl leading-snug mb-6 text-ink">Bạn thích đọc sách của tác giả trong nước hay ngoài nước?</h2>
+      <div class="flex flex-col gap-2">
+        <label class="flex items-center gap-4 p-3.5 rounded-sm cursor-pointer select-none border border-leather/20 bg-white/50 hover:bg-white/85 transition-all text-ink">
+          <input type="radio" name="q10" value="Trong nước" class="appearance-none w-4 h-4 border-1.5 border-leather/40 bg-white/60 checked:bg-leather rounded-full relative">
+          <span class="text-xl">Trong nước</span>
+        </label>
+        <label class="flex items-center gap-4 p-3.5 rounded-sm cursor-pointer select-none border border-leather/20 bg-white/50 hover:bg-white/85 transition-all text-ink">
+          <input type="radio" name="q10" value="Ngoài nước" class="appearance-none w-4 h-4 border-1.5 border-leather/40 bg-white/60 checked:bg-leather rounded-full relative">
+          <span class="text-xl">Ngoài nước</span>
+        </label>
+        <label class="flex items-center gap-4 p-3.5 rounded-sm cursor-pointer select-none border border-leather/20 bg-white/50 hover:bg-white/85 transition-all text-ink">
+          <input type="radio" name="q10" value="Cả hai" class="appearance-none w-4 h-4 border-1.5 border-leather/40 bg-white/60 checked:bg-leather rounded-full relative">
+          <span class="text-xl">Cả hai</span>
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <!-- Q11 BOOK GRID -->
+  <section class="min-h-screen px-6 md:px-12 py-32 flex items-center justify-center relative" data-bg="leather" data-progress="12">
+    <div class="max-w-[820px] w-full fade-in">
+      <div class="font-sans text-[13px] tracking-[0.35em] text-gold-light uppercase mb-4 flex items-center gap-4 font-medium before:h-px before:w-7 before:bg-gold-light">Câu hỏi 11 · Tủ sách</div>
+      <h2 class="font-display text-4xl md:text-5xl text-dark-text mb-6">Bạn đã từng đọc qua những quyển nào?</h2>
+      <p class="italic text-dark-text/75 mb-8">Chạm để chọn các cuốn sách bạn đã đọc.</p>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-5 mb-10" id="booksGrid">
+        <div class="aspect-[2/3] relative rounded-sm overflow-hidden cursor-pointer transition-all duration-300 shadow-xl hover:-translate-y-1.5 group ring-1 ring-leather/30 shadow-black/30 book-card" data-name="Đắc Nhân Tâm">
+          <img src="https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-lh8jhas6emnm85.webp" class="w-full h-full object-cover" referrerPolicy="no-referrer">
+          <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors p-4 flex flex-col justify-between items-center text-center py-10">
+            <div class="w-8 h-px bg-gold-pale/60"></div>
+            <div class="text-gold-pale/40 text-[10px]">❦</div>
+          </div>
+          <div class="absolute top-2 right-2 z-10 w-7 h-7 bg-gold rounded-full flex items-center justify-center text-dark-bg hidden book-check">✓</div>
+        </div>
+        <div class="aspect-[2/3] relative rounded-sm overflow-hidden cursor-pointer transition-all duration-300 shadow-xl hover:-translate-y-1.5 group ring-1 ring-leather/30 shadow-black/30 book-card" data-name="Nghĩ Giàu Và Làm Giàu">
+          <img src="https://cdn1.fahasa.com/media/catalog/product/n/g/nghigiaulamgiau_110k-01_bia_1.jpg" class="w-full h-full object-cover" referrerPolicy="no-referrer">
+          <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors p-4 flex flex-col justify-between items-center text-center py-10">
+            <div class="w-8 h-px bg-gold-pale/60"></div>
+            <div class="text-gold-pale/40 text-[10px]">❦</div>
+          </div>
+          <div class="absolute top-2 right-2 z-10 w-7 h-7 bg-gold rounded-full flex items-center justify-center text-dark-bg hidden book-check">✓</div>
+        </div>
+        <div class="aspect-[2/3] relative rounded-sm overflow-hidden cursor-pointer transition-all duration-300 shadow-xl hover:-translate-y-1.5 group ring-1 ring-leather/30 shadow-black/30 book-card" data-name="Hành Trình Về Phương Đông">
+          <img src="https://down-vn.img.susercontent.com/file/600d60cdfa54a105f88d3560d1c8ddf6.webp" class="w-full h-full object-cover" referrerPolicy="no-referrer">
+          <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors p-4 flex flex-col justify-between items-center text-center py-10">
+            <div class="w-8 h-px bg-gold-pale/60"></div>
+            <div class="text-gold-pale/40 text-[10px]">❦</div>
+          </div>
+          <div class="absolute top-2 right-2 z-10 w-7 h-7 bg-gold rounded-full flex items-center justify-center text-dark-bg hidden book-check">✓</div>
+        </div>
+        <div class="aspect-[2/3] relative rounded-sm overflow-hidden cursor-pointer transition-all duration-300 shadow-xl hover:-translate-y-1.5 group ring-1 ring-leather/30 shadow-black/30 book-card" data-name="Thế Giới Của Sophie">
+          <img src="https://i.ebayimg.com/images/g/rdgAAeSwgxxoj261/s-l1600.webp" class="w-full h-full object-cover" referrerPolicy="no-referrer">
+          <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors p-4 flex flex-col justify-between items-center text-center py-10">
+            <div class="w-8 h-px bg-gold-pale/60"></div>
+            <div class="text-gold-pale/40 text-[10px]">❦</div>
+          </div>
+          <div class="absolute top-2 right-2 z-10 w-7 h-7 bg-gold rounded-full flex items-center justify-center text-dark-bg hidden book-check">✓</div>
+        </div>
+        <div class="aspect-[2/3] relative rounded-sm overflow-hidden cursor-pointer transition-all duration-300 shadow-xl hover:-translate-y-1.5 group ring-1 ring-leather/30 shadow-black/30 book-card" data-name="Kinh Thánh">
+          <img src="https://cdn1.fahasa.com/media/catalog/product/z/6/z6779720019996_9f1f2c137257b029c785d762cec6daef_1.jpg" class="w-full h-full object-cover" referrerPolicy="no-referrer">
+          <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors p-4 flex flex-col justify-between items-center text-center py-10">
+            <div class="w-8 h-px bg-gold-pale/60"></div>
+            <div class="text-gold-pale/40 text-[10px]">❦</div>
+          </div>
+          <div class="absolute top-2 right-2 z-10 w-7 h-7 bg-gold rounded-full flex items-center justify-center text-dark-bg hidden book-check">✓</div>
+        </div>
+        <div class="aspect-[2/3] relative rounded-sm overflow-hidden cursor-pointer transition-all duration-300 shadow-xl hover:-translate-y-1.5 group ring-1 ring-leather/30 shadow-black/30 book-card" data-name="Nhà Giả Kim">
+          <img src="https://down-vn.img.susercontent.com/file/1afbf7e5ee656f00543619174a8839cb.webp" class="w-full h-full object-cover" referrerPolicy="no-referrer">
+          <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors p-4 flex flex-col justify-between items-center text-center py-10">
+            <div class="w-8 h-px bg-gold-pale/60"></div>
+            <div class="text-gold-pale/40 text-[10px]">❦</div>
+          </div>
+          <div class="absolute top-2 right-2 z-10 w-7 h-7 bg-gold rounded-full flex items-center justify-center text-dark-bg hidden book-check">✓</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GUESSING Q12-Q15 -->
+  <!-- Q12 -->
+  <section class="min-h-screen px-6 md:px-12 py-32 flex items-center relative" data-bg="q12" data-progress="13">
+    <div class="max-w-[680px] w-full md:ml-[8%] fade-in">
+      <div class="font-sans text-[13px] tracking-[0.35em] uppercase mb-4 flex items-center gap-4 font-medium text-gold-light before:h-px before:w-7 before:bg-gold-light">Câu hỏi 12 · Đoán xem</div>
+      <h2 class="font-display font-medium text-4xl md:text-5xl leading-snug mb-6 text-dark-text">Bạn có biết quyển sách hiện nay được dịch ra nhiều thứ tiếng nhất trên thế giới là quyển nào không?</h2>
+      <textarea id="q12" class="w-full bg-dark-paper/40 border border-gold-light/20 rounded-sm p-5 text-dark-text text-lg italic leading-relaxed outline-none focus:border-gold-light focus:bg-dark-paper/60 transition-all min-h-[120px]" placeholder="Câu trả lời của bạn..."></textarea>
+    </div>
+  </section>
+
+  <!-- Q13 -->
+  <section class="min-h-screen px-6 md:px-12 py-32 flex items-center relative" data-bg="q13" data-progress="14">
+    <div class="max-w-[680px] w-full md:ml-[8%] fade-in">
+      <div class="font-sans text-[13px] tracking-[0.35em] uppercase mb-4 flex items-center gap-4 font-medium text-gold-light before:h-px before:w-7 before:bg-gold-light">Câu hỏi 13 · Đoán xem</div>
+      <h2 class="font-display font-medium text-4xl md:text-5xl leading-snug mb-6 text-dark-text">Bạn có biết quyển sách hiện nay được xuất bản nhiều nhất trên thế giới là quyển nào không?</h2>
+      <textarea id="q13" class="w-full bg-dark-paper/40 border border-gold-light/20 rounded-sm p-5 text-dark-text text-lg italic leading-relaxed outline-none focus:border-gold-light focus:bg-dark-paper/60 transition-all min-h-[120px]" placeholder="Câu trả lời của bạn..."></textarea>
+    </div>
+  </section>
+
+  <!-- Q14 -->
+  <section class="min-h-screen px-6 md:px-12 py-32 flex items-center relative" data-bg="q14" data-progress="15">
+    <div class="max-w-[680px] w-full md:ml-[8%] fade-in">
+      <div class="font-sans text-[13px] tracking-[0.35em] uppercase mb-4 flex items-center gap-4 font-medium text-gold-light before:h-px before:w-7 before:bg-gold-light">Câu hỏi 14 · Đoán xem</div>
+      <h2 class="font-display font-medium text-4xl md:text-5xl leading-snug mb-6 text-dark-text">Bạn có biết quyển sách được bảo tồn lâu đời nhất trong lịch sử nhân loại — và không hề bị thay đổi nội dung — là quyển nào không?</h2>
+      <textarea id="q14" class="w-full bg-dark-paper/40 border border-gold-light/20 rounded-sm p-5 text-dark-text text-lg italic leading-relaxed outline-none focus:border-gold-light focus:bg-dark-paper/60 transition-all min-h-[120px]" placeholder="Câu trả lời của bạn..."></textarea>
+    </div>
+  </section>
+
+  <!-- Q15 -->
+  <section class="min-h-screen px-6 md:px-12 py-32 flex items-center relative" data-bg="q15" data-progress="16">
+    <div class="max-w-[680px] w-full md:ml-[8%] fade-in">
+      <div class="font-sans text-[13px] tracking-[0.35em] uppercase mb-4 flex items-center gap-4 font-medium text-gold-light before:h-px before:w-7 before:bg-gold-light">Câu hỏi 15 · Đoán xem</div>
+      <h2 class="font-display font-medium text-4xl md:text-5xl leading-snug mb-6 text-leather-dark drop-shadow-[0_1px_2px_rgba(240,230,210,0.9)]">Bạn có biết quyển sách nào chứa đựng kho tàng tri thức gốc của nhân loại — và là nền tảng cho hầu hết mọi lĩnh vực trong cuộc sống không?</h2>
+      <textarea id="q15" class="w-full bg-dark-paper/40 border border-gold-light/20 rounded-sm p-5 text-dark-text text-lg italic leading-relaxed outline-none focus:border-gold-light focus:bg-dark-paper/60 transition-all min-h-[120px]" placeholder="Câu trả lời của bạn..."></textarea>
+    </div>
+  </section>
+
+  <!-- REVEAL -->
+  <section class="min-h-screen px-6 md:px-12 py-32 flex items-center justify-center text-center relative" data-bg="reveal" data-progress="17">
+    <div class="max-w-[820px] fade-in">
+      <div class="font-display italic text-lg text-gold-light tracking-widest mb-6">— Bật mí —</div>
+      <h2 class="font-display font-normal text-5xl md:text-7xl text-dark-text leading-tight mb-8">Có một quyển sách<br/><em class="italic text-gold-light">hội tụ tất cả</em></h2>
+      <div class="flex items-center justify-center gap-4 my-11 text-gold-light opacity-70">
+        <div class="w-16 h-px bg-gradient-to-r from-transparent via-gold-light to-transparent"></div>
+        <span class="text-xl">❦</span>
+        <div class="w-16 h-px bg-gradient-to-r from-transparent via-gold-light to-transparent"></div>
+      </div>
+      <p class="text-dark-text/85 text-xl md:text-2xl leading-relaxed mb-6 max-w-2xl mx-auto">
+        Một cuốn sách <strong class="text-gold-light font-medium">được dịch ra nhiều thứ tiếng nhất</strong>, <strong class="text-gold-light font-medium">xuất bản nhiều nhất</strong>, <strong class="text-gold-light font-medium">bảo tồn lâu đời nhất</strong> trong lịch sử nhân loại — và là <strong class="text-gold-light font-medium">nền tảng tri thức gốc</strong> cho hầu hết mọi lĩnh vực trong cuộc sống.
+      </p>
+      <p class="text-dark-text/85 text-xl md:text-2xl leading-relaxed mb-12 max-w-2xl mx-auto italic">
+        Đây là quyển sách <strong class="text-gold-light font-medium">vô cùng đặc biệt</strong>, có ảnh hưởng trực tiếp đến <strong class="text-gold-light font-medium">cuộc đời chính chúng ta.</strong>
+      </p>
+      <p class="italic text-gold-light text-xl md:text-2xl mb-8">Bạn có muốn biết đáp án thông qua buổi hội thảo<br/>"Quyển Sách Thay Đổi Vận Mệnh" không?</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-xl mx-auto">
+        <label class="flex justify-center items-center gap-4 p-5 rounded-sm cursor-pointer select-none border border-gold-light/20 bg-dark-paper/50 hover:bg-dark-paper/70 hover:translate-x-1.5 transition-all text-dark-text font-display text-xl">
+          <input type="radio" name="interested" value="Có" class="appearance-none w-4 h-4 border-1.5 border-gold-light/40 bg-dark-paper/40 checked:bg-gold-light rounded-full relative">
+          <span>Có, mình muốn biết đáp án</span>
+        </label>
+        <label class="flex justify-center items-center gap-4 p-5 rounded-sm cursor-pointer select-none border border-gold-light/20 bg-dark-paper/50 hover:bg-dark-paper/70 hover:translate-x-1.5 transition-all text-dark-text font-display text-xl">
+          <input type="radio" name="interested" value="Không" class="appearance-none w-4 h-4 border-1.5 border-gold-light/40 bg-dark-paper/40 checked:bg-gold-light rounded-full relative">
+          <span>Chưa hứng thú lắm</span>
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORMAT -->
+  <section class="min-h-screen px-6 md:px-12 py-32 flex items-center relative" data-bg="paper-2" data-progress="17">
+    <div class="max-w-2xl w-full md:ml-[8%] fade-in">
+      <div class="font-sans text-[13px] tracking-[0.35em] uppercase mb-4 flex items-center gap-4 font-medium text-leather before:h-px before:w-7 before:bg-leather text-leather">Hình thức tham gia</div>
+      <h2 class="font-display font-medium text-4xl md:text-5xl leading-snug mb-6 text-ink">Bạn muốn tham gia hội thảo theo hình thức nào?</h2>
+      <p class="italic text-lg mb-8 text-ink-soft">Cả hai đều miễn phí. Chọn hình thức phù hợp nhất.</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-8">
+        <div class="aspect-square relative rounded-md overflow-hidden cursor-pointer transition-all duration-300 shadow-lg ring-1 ring-leather/20 flex flex-col justify-end p-6 format-card" data-value="online" style="background: linear-gradient(135deg, #d4c5a0, #8b6f47)">
+          <img src="https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=800&q=80" alt="" onload="this.classList.add('loaded')" onerror="this.remove()"/>
+          <div class="absolute inset-0 bg-gradient-to-b from-black/10 via-black/40 to-black/80"></div>
+          <div class="relative z-10">
+            <div class="font-sans text-[10px] tracking-[0.2em] uppercase text-gold-pale mb-1 font-medium">Linh hoạt · Mọi nơi</div>
+            <div class="font-display text-2xl text-dark-text leading-tight">Hội thảo Online</div>
+          </div>
+        </div>
+        <div class="aspect-square relative rounded-md overflow-hidden cursor-pointer transition-all duration-300 shadow-lg ring-1 ring-leather/20 flex flex-col justify-end p-6 format-card" data-value="offline" style="background: linear-gradient(135deg, #c9a961, #5c3a1f)">
+          <img src="https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=800&q=80" alt="" onload="this.classList.add('loaded')" onerror="this.remove()"/>
+          <div class="absolute inset-0 bg-gradient-to-b from-black/10 via-black/40 to-black/80"></div>
+          <div class="relative z-10">
+            <div class="font-sans text-[10px] tracking-[0.2em] uppercase text-gold-pale mb-1 font-medium">Gặp gỡ · Trực tiếp</div>
+            <div class="font-display text-2xl text-dark-text leading-tight">Hội thảo Offline</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="min-h-screen px-6 md:px-12 py-32 flex items-center justify-center relative" data-bg="reveal" data-progress="17">
+    <div class="max-w-[600px] w-full fade-in">
+      <div class="font-sans text-[13px] tracking-[0.35em] text-gold-light uppercase mb-4 flex items-center gap-4 font-medium before:h-px before:w-7 before:bg-gold-light">Thông tin liên hệ</div>
+      <h2 class="font-display text-4xl md:text-5xl text-dark-text mb-6">Vài thông tin cuối cùng</h2>
+      <p class="italic text-dark-text/75 mb-10">Để chúng mình gửi link và lịch hội thảo cho bạn.</p>
+      <div class="flex flex-col gap-8">
+        <div class="flex flex-col gap-1 w-full">
+          <div class="font-sans text-[10px] tracking-[0.2em] uppercase text-gold-light mb-1 font-medium">Bạn tên là</div>
+          <input type="text" id="userName" placeholder="Họ và tên..." class="bg-transparent border-b border-dark-text/20 py-3 text-dark-text text-2xl font-display outline-none focus:border-gold-light placeholder:text-dark-text/30 placeholder:italic transition-colors">
+        </div>
+        <div class="flex flex-col gap-1 w-full">
+          <div class="font-sans text-[10px] tracking-[0.2em] uppercase text-gold-light mb-1 font-medium">SĐT / Email để gửi thông tin Hội Thảo</div>
+          <input type="text" id="userContact" placeholder="0xxx... hoặc email@..." class="bg-transparent border-b border-dark-text/20 py-3 text-dark-text text-2xl font-display outline-none focus:border-gold-light placeholder:text-dark-text/30 placeholder:italic transition-colors">
+        </div>
+        <div class="flex flex-col gap-1 w-full">
+          <div class="font-sans text-[10px] tracking-[0.2em] uppercase text-gold-light mb-1 font-medium">Tên người khảo sát <span class="text-gold-light">*</span></div>
+          <input type="text" id="surveyor" placeholder="Người đã giới thiệu khảo sát này..." class="bg-transparent border-b border-dark-text/20 py-3 text-dark-text text-2xl font-display outline-none focus:border-gold-light placeholder:text-dark-text/30 placeholder:italic transition-colors">
+        </div>
+      </div>
+      <button id="submitBtn" class="mt-12 bg-gold hover:bg-gold-light text-dark-bg px-11 py-5 font-display font-semibold text-lg tracking-widest uppercase rounded-sm transition-all shadow-lg hover:-translate-y-1 active:translate-y-0">Gửi khảo sát</button>
+    </div>
+  </section>
+
+  <!-- THANKS -->
+  <section id="thanksSection" class="min-h-screen px-6 md:px-12 py-32 hidden items-center justify-center text-center relative" data-bg="reveal">
+    <div class="max-w-3xl fade-in">
+      <div class="font-display italic text-lg text-gold-light tracking-widest mb-6">— Cảm ơn —</div>
+      <h2 class="font-display font-normal text-4xl md:text-6xl text-dark-text leading-tight mb-8">Hẹn gặp bạn<br/><em class="italic text-gold-light">trong buổi hội thảo</em></h2>
+      <p class="text-dark-text/85 text-lg leading-relaxed mb-6">Chúng mình đã nhận được câu trả lời của bạn. Trong vài ngày tới, đội ngũ <strong>Wonder of World</strong> sẽ liên hệ để gửi thông tin chi tiết về buổi hội thảo <em>"Quyển Sách Thay Đổi Vận Mệnh"</em>.</p>
+      <div class="flex items-center justify-center gap-4 my-11 text-gold-light opacity-70">
+        <div class="w-16 h-px bg-gradient-to-r from-transparent via-gold-light to-transparent"></div>
+        <span class="text-xl">❦</span>
+        <div class="w-16 h-px bg-gradient-to-r from-transparent via-gold-light to-transparent"></div>
+      </div>
+      <p class="italic text-dark-text/75">"Mỗi trang sách là một cánh cửa,<br/>mỗi cánh cửa là một chân trời."</p>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // Variables
+  const bgLayers = document.querySelectorAll('.bg-layer');
+  const sections = document.querySelectorAll('section[data-bg]');
+  const progressNum = document.getElementById('progressNum');
+  const topBar = document.getElementById('topBar');
+  const progressCont = document.getElementById('progressCont');
+  const DARK_BGS = new Set(['hero', 'quote', 'leather', 'reveal', 'q12', 'q13', 'q14', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9']);
+
+  // Background Switching
+  // Background switching dùng scroll position thay vì IntersectionObserver
+  // để xử lý đúng cả section ngắn lẫn section rất dài
+  function getActiveSectionByScroll() {
+    const scrollMid = window.scrollY + window.innerHeight * 0.45;
+    let best = null;
+    sections.forEach(section => {
+      const top = section.offsetTop;
+      const bottom = top + section.offsetHeight;
+      if (scrollMid >= top && scrollMid < bottom) {
+        best = section;
+      }
+    });
+    // Fallback: nếu không có section nào chứa midpoint (đầu/cuối trang)
+    if (!best) {
+      const scrollMidFallback = window.scrollY + window.innerHeight * 0.5;
+      let minDist = Infinity;
+      sections.forEach(section => {
+        const mid = section.offsetTop + section.offsetHeight / 2;
+        const dist = Math.abs(mid - scrollMidFallback);
+        if (dist < minDist) { minDist = dist; best = section; }
+      });
+    }
+    return best;
+  }
+
+  let lastBg = null;
+  function updateBackground() {
+    const active = getActiveSectionByScroll();
+    if (!active) return;
+    const bg = active.getAttribute('data-bg');
+    const prog = active.getAttribute('data-progress');
+    if (bg === lastBg) return;
+    lastBg = bg;
+
+    // Update BG Layers
+    bgLayers.forEach(layer => {
+      layer.classList.toggle('active', layer.getAttribute('data-bg') === bg);
+    });
+
+    // Update Progress
+    if (prog) progressNum.textContent = prog;
+
+    // Update Header Style
+    const isDark = DARK_BGS.has(bg);
+    topBar.classList.toggle('text-dark-text', isDark);
+    topBar.classList.toggle('text-ink', !isDark);
+
+    progressCont.classList.toggle('border-gold-light/30', isDark);
+    progressCont.classList.toggle('bg-dark-bg/40', isDark);
+    progressCont.classList.toggle('text-dark-text', isDark);
+
+    progressCont.classList.toggle('border-leather/30', !isDark);
+    progressCont.classList.toggle('bg-paper/40', !isDark);
+    progressCont.classList.toggle('text-ink-soft', !isDark);
+
+    progressNum.classList.toggle('text-gold-light', isDark);
+    progressNum.classList.toggle('text-leather', !isDark);
+  }
+
+  // Dùng requestAnimationFrame để tránh layout thrashing khi scroll
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => { updateBackground(); ticking = false; });
+      ticking = true;
+    }
+  }, { passive: true });
+
+  // Chạy lần đầu khi load
+  updateBackground();
+
+  sections.forEach(s => s); // giữ lại để dùng ở chỗ khác nếu cần
+
+  // Fade In Animation
+  const fadeObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.fade-in').forEach(el => fadeObserver.observe(el));
+
+  // Book Selection Logic
+  document.querySelectorAll('.book-card').forEach(card => {
+    card.addEventListener('click', () => {
+      card.classList.toggle('ring-2');
+      card.classList.toggle('ring-gold');
+      card.classList.toggle('shadow-gold/40');
+      card.classList.toggle('-translate-y-1.5');
+      const check = card.querySelector('.book-check');
+      check.classList.toggle('hidden');
+    });
+  });
+
+  // Format Selection Logic
+  const formatCards = document.querySelectorAll('.format-card');
+  formatCards.forEach(card => {
+    card.addEventListener('click', () => {
+      formatCards.forEach(c => {
+        c.classList.remove('ring-2', 'ring-gold', 'shadow-gold/30', '-translate-y-1');
+        c.classList.add('ring-1', 'ring-leather/20');
+      });
+      card.classList.remove('ring-1', 'ring-leather/20');
+      card.classList.add('ring-2', 'ring-gold', 'shadow-gold/30', '-translate-y-1');
+    });
+  });
+
+  // Submission Logic
+  function collectCheckboxesInSection(bgName) {
+    const section = document.querySelector('section[data-bg="' + bgName + '"]');
+    if (!section) return [];
+    return [...section.querySelectorAll('input[type="checkbox"][value]:checked')]
+      .map(c => c.value);
+  }
+
+  function collectDocsachAnswers() {
+    const answers = {};
+    const radios = ['q1', 'q3', 'q4', 'q5', 'q7', 'q8', 'q10', 'interested'];
+    radios.forEach(name => {
+      const checked = document.querySelector('input[type="radio"][name="' + name + '"]:checked');
+      answers[name] = checked ? checked.value : null;
+    });
+
+    answers.q2 = collectCheckboxesInSection('q2');
+    if (document.getElementById('q2_other_check')?.checked) {
+      answers.q2Other = document.getElementById('q2_other_val')?.value || '';
+    }
+    answers.q6 = collectCheckboxesInSection('q6');
+
+    ['q9', 'q12', 'q13', 'q14', 'q15'].forEach(id => {
+      answers[id] = document.getElementById(id)?.value || '';
+    });
+
+    answers.interestedBooks = [...document.querySelectorAll('.book-card.ring-2')]
+      .map(c => c.dataset.name);
+
+    const selectedFormat = document.querySelector('.format-card.ring-2');
+    answers.format = selectedFormat ? selectedFormat.dataset.value : null;
+
+    return answers;
+  }
+
+  document.getElementById('submitBtn').addEventListener('click', async (e) => {
+    const surveyor = document.getElementById('surveyor').value;
+    if (!surveyor) {
+      alert('Vui lòng nhập tên người khảo sát.');
+      return;
+    }
+
+    const btn = e.currentTarget;
+    const original = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Đang gửi...';
+
+    const payload = {
+      survey: 'docsach',
+      name: document.getElementById('userName').value,
+      contact: document.getElementById('userContact').value,
+      surveyor,
+      answers: collectDocsachAnswers(),
+    };
+
+    try {
+      const res = await fetch('/api/submit-survey', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+    } catch (err) {
+      console.error('submit error', err);
+      alert('Gửi không thành công. Vui lòng thử lại.');
+      btn.disabled = false;
+      btn.textContent = original;
+      return;
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => {
+      document.querySelectorAll('section:not(#thanksSection)').forEach(s => s.classList.add('hidden'));
+      document.getElementById('thanksSection').classList.remove('hidden');
+      document.getElementById('thanksSection').classList.add('flex');
+      bgLayers.forEach(layer => layer.classList.toggle('active', layer.getAttribute('data-bg') === 'reveal'));
+      progressNum.textContent = '✓';
+    }, 500);
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "name": "view-html",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "type": "module",
+  "dependencies": {
+    "@netlify/database": "^1.0.0",
+    "drizzle-orm": "^1.0.0-beta.22"
+  },
+  "devDependencies": {
+    "@netlify/functions": "^5.2.2",
+    "drizzle-kit": "^1.0.0-beta.22",
+    "typescript": "^6.0.3"
+  }
+}
